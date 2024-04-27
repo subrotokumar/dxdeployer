@@ -1,0 +1,63 @@
+entity-relationship-diagram
+
+project_status {
+    running
+    failed
+    deployed
+}
+
+plan {
+    free
+    paid
+    enterprice
+}
+
+transaction_state {
+    not started
+    panding
+    failed
+    success
+}
+
+user [icon: user, color: orange] {
+    id bigserial pk
+    username varchar not null
+    email varchar unique
+    createdAt timestamp default 'now()'
+}
+
+project [icon: computer, color:green] {
+    id bigserial pk
+    userId bigint
+    name varchar not null
+    url varchar not null
+    status project_status
+    createAt timestamp default: 'now()'
+}
+
+deployments [icon: file, color: yellow] {
+    id bigserial pk
+    deploymentId uuid 
+    projectId bigint
+}
+
+subscription [icon: barcode, color: purple] {
+    id bigserial pk
+    userId bigint
+    current_plan plan default: 'free'
+    expiry timestamp
+}
+
+transaction [icon: money, color: lightblue]{
+    id bigserial pk
+    userId bigint
+    status transaction_state not null
+    time timestamp
+    plan_choosed plan
+    amount decimal
+}
+
+project.userId > user.id
+transaction.userId > user.id
+subscription.userId - user.id
+deployments.projectId > project.id

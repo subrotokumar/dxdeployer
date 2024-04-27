@@ -1,0 +1,49 @@
+enum project_status {
+    running
+    failed
+    deployed
+}
+
+enum plan {
+    free
+    paid
+    enterprice
+}
+
+Table user {
+    id bigserial [pk, increment]
+    username varchar [not null]
+    email varchar [unique]
+    createdAt timestamp [default: 'now()']
+}
+
+Table project {
+    id bigserial [pk]
+    userId bigint [ref: > user.id]
+    name varchar [not null]
+    url varchar [not null]
+    status project_status
+    createAt timestamp [default: 'now()']
+}
+
+Table deployments {
+    id bigserial [pk]
+    deploymentId uuid 
+    projectId bigint [ref: > project.id]
+}
+
+Table Subscription {
+    id bigserial [pk]
+    userId bigint [ref: - user.id]
+    current_plan plan [default: 'free']
+    expiry timestamp
+}
+
+Table Transaction {
+    id bigserial [pk]
+    userId bigint [ref: > user.id]
+    status varchar [not null]
+    time timestamp
+    plan_choosed plan
+    amount decimal
+}
