@@ -1,0 +1,11 @@
+{
+	"devDependencies": {
+		"husky": "^9.0.11"
+	},
+	"scripts": {
+		"prepare": "husky",
+		"encrypt": "make encrypt && git add .",
+		"decrypt": "make decrypt && git add .",
+		"clean": "rm -rf node_modules"
+	}
+}
