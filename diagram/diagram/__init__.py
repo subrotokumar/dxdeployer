@@ -19,7 +19,7 @@ with Diagram(name= "DxD Platfrom as a code", show=False):
     urlretrieve("https://cdn.dribbble.com/users/79821/screenshots/1150481/flat-browser-icons_1x.jpg", "image/browser.jpg")
     urlretrieve("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8HYPppZX_HJQGi7YNZrVqsqjbY9IMvlg4nA-NcLlxluBwgO7UoW6mRY28c4iTGvPCEPQ&usqp=CAU", "image/spring-cloud.jpg")
     browser = Custom("Browser", "image/browser.jpg")
-    spring_cloud = Custom("Eureka", "image/spring-cloud.jpg")
+    eureka = Custom("Eureka", "image/spring-cloud.jpg")
     storage = S3("Object Storage")
 
     postgres = PostgreSQL("Database")
@@ -72,7 +72,7 @@ with Diagram(name= "DxD Platfrom as a code", show=False):
     redis >> mongo
     # redis >> postgres
     
-    spring_cloud >> microservice
+    eureka >> microservice
     # project_microservice >> postgres
 
     container_service = ECS("ECS")
@@ -87,3 +87,18 @@ with Diagram(name= "DxD Platfrom as a code", show=False):
     projects >> Spring("Web Proxy\nService") >> browser
     microservice >> postgres
     project_microservice >> mongo
+
+with Diagram(name= "Microservice", show=False):
+    eureka = Custom("Eureka", "image/spring-cloud.jpg")
+    with Cluster("Microserivces"):
+        accounts = Spring("Accounts")
+        project = Spring("project")
+        payment = Spring("payment")
+        services = [
+            accounts,
+            project,
+            payment
+        ]
+    eureka >> services
+    
+        

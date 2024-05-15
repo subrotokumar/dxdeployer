@@ -1,0 +1,67 @@
+{"properties": [
+  {
+    "name": "cloud.cluster.security-group",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.security-group'"
+  },
+  {
+    "name": "cloud.cluster.subnet",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.subnet'"
+  },
+  {
+    "name": "cloud.cluster.count",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.count'"
+  },
+  {
+    "name": "cloud.cluster.region",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.region'"
+  },
+  {
+    "name": "cloud.cluster.service",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.service'"
+  },
+  {
+    "name": "cloud.cluster.task-defination",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.task-defination'"
+  },
+  {
+    "name": "cloud.cluster.image",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.image'"
+  },
+  {
+    "name": "cloud.cluster.name",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.name'"
+  },
+  {
+    "name": "application.config.accounts-url",
+    "type": "java.lang.String",
+    "description": "A description for 'application.config.accounts-url'"
+  },
+  {
+    "name": "cloud.cluster.aws_secret_key",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.aws_secret_key'"
+  },
+  {
+    "name": "cloud.cluster.aws_access_key",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.aws_access_key'"
+  },
+  {
+    "name": "cloud.cluster.bucket",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.bucket'"
+  },
+  {
+    "name": "cloud.cluster.redis_url",
+    "type": "java.lang.String",
+    "description": "A description for 'cloud.cluster.redis_url'"
+  }
+]}

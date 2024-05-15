@@ -1,4 +1,5 @@
 {
+    "java.debug.settings.onBuildFailureProceed": true,
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -6,9 +7,11 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
-        ".husky": true,
-        ".vscode": true,
-        "node_modules": true
+        "node_modules": true,
+        "**/.idea": true,
+        "**/.vscode": true,
+        "**/.husky": true
     },
-    "explorerExclude.backup": {}
+    "explorerExclude.backup": {},
+    "java.configuration.updateBuildConfiguration": "automatic"
 }
