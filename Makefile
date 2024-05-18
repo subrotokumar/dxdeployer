@@ -3,13 +3,14 @@ project=microservices/config/src/main/resources/configurations/project.yaml
 gateway=microservices/config/src/main/resources/configurations/gateway.yaml
 discovery=microservices/config/src/main/resources/configurations/discovery.yaml
 payment=microservices/config/src/main/resources/configurations/payment.yaml
+notification=microservices/config/src/main/resources/configurations/notification.yaml
 config=microservices/config/src/main/resources/application.yaml
 
 encrypt:
-	@ansible-vault encrypt ${accounts} ${project} ${gateway} ${discovery} ${payment}
+	@ansible-vault encrypt ${accounts} ${project} ${gateway} ${discovery} ${payment} ${notification}
 
 decrypt:
-	@ansible-vault decrypt ${accounts} ${project} ${gateway} ${discovery} ${payment}
+	@ansible-vault decrypt ${accounts} ${project} ${gateway} ${discovery} ${payment} ${notification}
 
 commit:
 	./scripts/commit.sh

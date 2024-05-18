@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.net.HttpHeaders;
 
+import dev.subrotokumar.gateway.exception.InvalidAuthorizationToken;
+import dev.subrotokumar.gateway.exception.MissingAuthenticationHeader;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -43,11 +45,14 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             log.info("Path => {}", exchange.getRequest().getPath());
             if (validator.isSecured.test(exchange.getRequest())) {
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    throw new RuntimeException("missing authorization header");
+                    throw new MissingAuthenticationHeader();
                 }
 
-                String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).getFirst();
-                System.out.println("Aut : "+authHeader);
+                var authHeaders = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
+                if(authHeaders==null || authHeaders.isEmpty()){
+                    throw new MissingAuthenticationHeader();
+                }
+                String authHeader = authHeaders.getFirst();
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);
                 }
@@ -69,12 +74,12 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                             .header("X-USER-NAME", username)
                             .header(username, "X-USER-ROLE", role)
                             .build();
+                            
                     exchange = exchange.mutate().request(request).build();
                 } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException
                         | IllegalArgumentException e) {
-                    System.out.println("invalid access...!");
+                    throw new InvalidAuthorizationToken();
                 }
-
             }
             return chain.filter(exchange);
         });

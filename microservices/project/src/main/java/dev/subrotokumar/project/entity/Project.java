@@ -3,9 +3,7 @@ package dev.subrotokumar.project.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -59,7 +57,6 @@ public class Project {
     @Column(insertable=false)
     private LocalDateTime lastDeployedAt;
 
-    @ElementCollection
-    @CollectionTable()
+    @Column(columnDefinition="text[]")
     private List<String> tags;
 }

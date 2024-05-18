@@ -1,5 +1,6 @@
 package dev.subrotokumar.project.mapper;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import dev.subrotokumar.project.dto.CreateProjectDto;
@@ -14,12 +15,14 @@ public class ProjectMapper {
         return Project
             .builder()
             .id(null)
-            .slug(dto.getName())
+            .slug(dto.getSlug())
             .title(dto.getTitle())
             .description(dto.getDescription())
             .githubUrl(dto.getGithubUrl())
             .status(ProjectStatus.INACTIVE)
             .tags(dto.getTags())
+            .createdAt(LocalDateTime.now())
+            .type(dto.getType())
             .build();
     }
 }

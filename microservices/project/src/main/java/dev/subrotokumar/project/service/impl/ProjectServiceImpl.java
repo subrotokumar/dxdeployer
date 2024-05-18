@@ -55,11 +55,11 @@ public class ProjectServiceImpl implements ProjectService {
         var project = ProjectMapper.dtoToEntity(createProjectDto);
         project.setSlug(UUID.nameUUIDFromBytes(project.getGithubUrl().getBytes()).toString()+System.currentTimeMillis());
         project.setUserId(userId);
-        boolean status = containerService.startTask(project.getSlug(), project.getGithubUrl());
-        if (status) {
-            project.setStatus(ProjectStatus.INACTIVE);
+        // boolean status = containerService.startTask(project.getSlug(), project.getGithubUrl());
+        // if (status) {
+        //     project.setStatus(ProjectStatus.INACTIVE);
             projectRepository.save(project);
-        }
+        // }
     }
 
     @Override
