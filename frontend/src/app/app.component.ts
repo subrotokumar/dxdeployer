@@ -7,8 +7,6 @@ import { HomeComponent } from './features/home/home.component';
   standalone: true,
   imports: [RouterOutlet, HomeComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
-export class AppComponent {
-
-}
+export class AppComponent {}

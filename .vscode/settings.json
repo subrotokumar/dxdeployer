@@ -11,27 +11,14 @@
     "**/.project": false,
     "**/.settings": false,
     "**/.factorypath": false,
-    "node_modules": false,
+    "node_modules": true,
     "**/.idea": false,
     "**/.vscode": false,
-    "**/.husky": false
+    "**/.husky": false,
+    ".vscode": true,
+    ".husky": true
   },
-  "explorerExclude.backup": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "**/.classpath": true,
-    "**/.project": true,
-    "**/.settings": true,
-    "**/.factorypath": true,
-    "node_modules": true,
-    "**/.idea": true,
-    "**/.vscode": true,
-    "**/.husky": true
-  },
+  "explorerExclude.backup": {},
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.compile.nullAnalysis.mode": "disabled"
 }
