@@ -2,9 +2,7 @@ package dev.subrotokumar.accounts.constants;
 
 public class AccountConstants {
 
-    private AccountConstants() {
-    }
-
+    private AccountConstants() {}
 
     public static final String INFO_API_PREFIX = "/api/v1/account";
     public static final String AUTH_API_PREFIX = "/api/v1/account/auth";

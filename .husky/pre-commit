@@ -1,1 +1,1 @@
-pnpm encrypt
+make encrypt && git add .

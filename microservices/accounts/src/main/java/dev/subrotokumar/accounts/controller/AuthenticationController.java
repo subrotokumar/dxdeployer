@@ -25,6 +25,10 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Controller for handling authentication-related operations such as user
+ * registration, login, and token refresh.
+ */
 @Tag(name = "Authentication")
 @RestController
 @RequestMapping(path = AccountConstants.AUTH_API_PREFIX, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -36,21 +40,39 @@ public class AuthenticationController {
 
     private final AuthenticationService authService;
 
+    /**
+     * Registers a new user account with the provided account details.
+     *
+     * @param registerAccountDto DTO containing registration details
+     */
     @Operation(summary = "Register Account", description = "Create a new user account")
     @ApiResponse(responseCode = "201", description = "Http Status Created")
     @PostMapping("/register")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void registerAccount(@Valid @RequestBody RegisterAccountRequestDto registerAccountDto
+    public void registerAccount(
+            @Valid @RequestBody RegisterAccountRequestDto registerAccountDto
     ) {
         authService.registerAccount(registerAccountDto);
     }
 
+    /**
+     * Authenticates a user based on the provided credentials.
+     *
+     * @param authenticationRequestDto DTO containing authentication credentials
+     * @return AuthenticationResponseDto with authentication details
+     */
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponseDto> authenticate(
             @Valid @RequestBody AuthenticationRequestDto authenticationRequestDto) {
         return ResponseEntity.ok(authService.authenticate(authenticationRequestDto));
     }
 
+    /**
+     * Refreshes the authentication token using a valid refresh token.
+     *
+     * @param refreshTokenDto DTO containing the refresh token
+     * @return AuthenticationResponseDto with new authentication details
+     */
     @GetMapping("/refresh")
     public ResponseEntity<AuthenticationResponseDto> refreshToken(@Valid @RequestBody RefreshTokenRequestDto refreshTokenDto) {
         log.info(refreshTokenDto.getRefreshToken());
