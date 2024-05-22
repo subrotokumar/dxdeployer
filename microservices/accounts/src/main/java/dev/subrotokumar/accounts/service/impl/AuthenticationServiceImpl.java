@@ -21,6 +21,8 @@ import dev.subrotokumar.accounts.mapper.AccountMapper;
 import dev.subrotokumar.accounts.repository.AccountRepository;
 import dev.subrotokumar.accounts.repository.RefreshTokenRepository;
 import dev.subrotokumar.accounts.service.AuthenticationService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -90,11 +92,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResponseDto authenticate(AuthenticationRequestDto request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+    public AuthenticationResponseDto authenticate(AuthenticationRequestDto request, HttpServletResponse response) {
+        authenticationManager.
+                authenticate(
+                        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-        log.info("Authorised");
+        log.info("Authorized");
 
         Account account = accountRepository
                 .findByUsername(request.getUsername())
@@ -114,7 +117,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .build()
         );
 
-        return AuthenticationResponseDto
+        var authResponse = AuthenticationResponseDto
                 .builder()
                 .accessToken(
                         TokenDto
@@ -131,6 +134,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                 .build()
                 )
                 .build();
+
+        // Create secure cookie
+        Cookie cookie1 = new Cookie("access_token", "Bearer " + authResponse.getAccessToken().getToken());
+        cookie1.setHttpOnly(true);
+        cookie1.setSecure(true); // Use true if HTTPS is enabled
+        cookie1.setPath("/");
+        cookie1.setMaxAge(7 * 24 * 60 * 60);
+
+        Cookie cookie2 = new Cookie("refresh_token", authResponse.getRefreshToken().getToken());
+        cookie2.setHttpOnly(true);
+        cookie2.setSecure(true); // Use true if HTTPS is enabled
+        cookie2.setPath("/");
+        cookie2.setMaxAge(7 * 24 * 60 * 60);
+
+        response.addCookie(cookie1);
+        response.addCookie(cookie2);
+
+        return authResponse;
     }
 
 }

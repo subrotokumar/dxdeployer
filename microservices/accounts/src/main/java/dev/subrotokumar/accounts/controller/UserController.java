@@ -16,7 +16,6 @@ import dev.subrotokumar.accounts.constants.AccountConstants;
 import dev.subrotokumar.accounts.constants.Constants;
 import dev.subrotokumar.accounts.dto.AccountDto;
 import dev.subrotokumar.accounts.dto.ResponseDto;
-import dev.subrotokumar.accounts.entity.Role;
 import dev.subrotokumar.accounts.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -51,10 +50,9 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "Data retrieval successful")
     @GetMapping()
     public ResponseEntity<ResponseDto<AccountDto>> getUserData(
-        @RequestHeader(Constants.USER_ID) int userId, 
-        @RequestHeader(name=Constants.USER_ROLE,defaultValue="USER") String userRole
+            @RequestHeader(Constants.USER_ID) int userId,
+            @RequestHeader(name = Constants.USER_ROLE, defaultValue = "USER") String userRole
     ) {
-        Role role = Role.valueOf(userRole);
         return ResponseEntity.ok(
                 ResponseDto.<AccountDto>builder()
                         .status(HttpStatus.OK)

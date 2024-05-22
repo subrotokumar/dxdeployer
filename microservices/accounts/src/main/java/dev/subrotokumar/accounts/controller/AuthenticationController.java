@@ -21,6 +21,7 @@ import dev.subrotokumar.accounts.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,12 +60,15 @@ public class AuthenticationController {
      * Authenticates a user based on the provided credentials.
      *
      * @param authenticationRequestDto DTO containing authentication credentials
+     * @param response http response
      * @return AuthenticationResponseDto with authentication details
      */
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponseDto> authenticate(
-            @Valid @RequestBody AuthenticationRequestDto authenticationRequestDto) {
-        return ResponseEntity.ok(authService.authenticate(authenticationRequestDto));
+            @Valid @RequestBody AuthenticationRequestDto authenticationRequestDto,
+            HttpServletResponse response
+    ) {
+        return ResponseEntity.ok(authService.authenticate(authenticationRequestDto, response));
     }
 
     /**

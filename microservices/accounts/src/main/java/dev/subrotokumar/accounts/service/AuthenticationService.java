@@ -4,6 +4,7 @@ import dev.subrotokumar.accounts.dto.AuthenticationRequestDto;
 import dev.subrotokumar.accounts.dto.AuthenticationResponseDto;
 import dev.subrotokumar.accounts.dto.RefreshTokenRequestDto;
 import dev.subrotokumar.accounts.dto.RegisterAccountRequestDto;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Service interface for managing authentication processes.
@@ -29,7 +30,8 @@ public interface AuthenticationService {
      * Authenticates a user based on the provided credentials.
      *
      * @param authenticationRequestDto DTO containing authentication credentials
+     * @param response http response
      * @return AuthenticationResponseDto with authentication details
      */
-    AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequestDto);
+    AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequestDto, HttpServletResponse response);
 }

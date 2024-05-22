@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 
 import com.google.common.net.HttpHeaders;
 
@@ -22,7 +24,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
@@ -47,12 +48,20 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                     throw new MissingAuthenticationHeader();
                 }
+                MultiValueMap<String, ResponseCookie> cookies = exchange.getResponse().getCookies();
+                ResponseCookie accessTokenCookie = cookies.getFirst("access_token");
 
-                var authHeaders = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
-                if(authHeaders==null || authHeaders.isEmpty()){
-                    throw new MissingAuthenticationHeader();
+                String authHeader = "";
+                if (accessTokenCookie != null) {
+                    authHeader = accessTokenCookie.getValue();
+                } else {
+                    var authHeaders = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
+                    if (authHeaders == null || authHeaders.isEmpty()) {
+                        throw new MissingAuthenticationHeader();
+                    }
+                    authHeader = authHeaders.getFirst();
                 }
-                String authHeader = authHeaders.getFirst();
+
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);
                 }
@@ -66,7 +75,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     String username = claim.getSubject();
                     String id = claim.get("userId").toString();
                     String role = claim.get("role").toString();
-                    log.debug("X-USER [ Username: {}, Id: {}, Role: {} ]", username, id, role);
                     var request = exchange
                             .getRequest()
                             .mutate()
@@ -74,7 +82,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                             .header("X-USER-NAME", username)
                             .header(username, "X-USER-ROLE", role)
                             .build();
-                            
+
                     exchange = exchange.mutate().request(request).build();
                 } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException
                         | IllegalArgumentException e) {
