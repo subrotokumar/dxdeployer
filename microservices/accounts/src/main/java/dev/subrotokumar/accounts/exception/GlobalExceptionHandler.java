@@ -68,4 +68,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .badRequest()
                 .body(errorResponseDto);
     }
+
+    @ExceptionHandler(UnauthorizedOperationException.class)
+    public ResponseEntity<ErrorResponseDto> handleUnauthorizedOperationException(UnauthorizedOperationException exception,
+            WebRequest webRequest) {
+        var errorResponseDto = ErrorResponseDto
+                .builder()
+                .path(webRequest.getDescription(false).substring(4))
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .statusMessage(HttpStatus.UNAUTHORIZED.name())
+                .message(exception.getMessage())
+                .time(LocalDateTime.now())
+                .build();
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseDto);
+    }
 }

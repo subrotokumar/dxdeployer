@@ -1,1 +1,55 @@
-<p>login works!</p>
+<nav class="flex justify-between p-4">
+    <div>
+        <img src="/assets/meteor-light.png" class="w-8 h-8">
+    </div>
+    <div>
+        <button class="mr-4 text-gray-400">
+            Connect
+        </button>
+        <button class="border-gray-500 hover:bg-gray-500 px-3 py-1 border rounded-md">
+            Sign Up
+        </button>
+    </div>
+</nav>
+
+<!-- BODY -->
+<div id="body" class="flex flex-col items-center my-16 overflow-y-auto no-scrollbar">
+    <p class="mb-3 font-bold text-3xl">Log in to DxDeployer</p>
+
+    <button class="bg-gray-500 mt-4 px-4 py-2 rounded-lg w-80"> 
+        Login with GitHub 
+    </button>
+    <button class="bg-indigo-500 mt-4 px-4 py-2 rounded-lg w-80"> Login with Magiclink </button>
+
+    <div class="border-gray-500 my-4 border border-b-transparent w-80"></div>
+
+    <button class="border-gray-400 mt-4 px-4 py-2 border rounded-lg w-80"> Continue with Email </button>
+</div>
+
+<div class="bg-gray-700 mt-20 h-[0.5px]"></div>
+<div class="flex flex-row justify-center p-4 text-indigo-400">
+    <button>
+        Don't have a account? Sign up
+    </button>
+</div>
+<div class="bg-gray-700 h-[0.5px]"></div>
+
+<!-- Footer -->
+<footer class="flex items-center h-16 text-sm">
+    <li class="flex items-center ml-5">
+        <img src="/assets/meteor-light.png" class="mr-3 w-5">
+        <span>© 2024</span>
+    </li>
+    <ul class="flex-1 items-center grid grid-cols-7 pl-10 text-gray-400">
+        <li class="hover:text-white">Home</li>
+        <li class="hover:text-white">Docs</li>
+        <li class="hover:text-white">Help</li>
+        <li class="hover:text-white">Blog</li>
+        <li class="hover:text-white">Pricing</li>
+        <li class="hover:text-white">Sign up</li>
+        <li class="hover:text-white">Architecture</li>
+    </ul>
+    <li class="flex items-center">
+        <img src="/assets/github-light.png" class="mr-3 ml-3 w-5">
+    </li>
+</footer>
