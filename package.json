@@ -7,5 +7,9 @@
 		"encrypt": "make encrypt && git add .",
 		"decrypt": "make decrypt && git add .",
 		"clean": "rm -rf node_modules"
+	},
+	"dependencies": {
+		"lottie-web": "^5.12.2",
+		"ngx-lottie": "^11.0.2"
 	}
 }

@@ -1,6 +1,7 @@
 package dev.subrotokumar.gateway.filter;
 
 import java.security.Key;
+import java.util.Base64;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,15 +46,15 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         return ((exchange, chain) -> {
             log.info("Path => {}", exchange.getRequest().getPath());
             if (validator.isSecured.test(exchange.getRequest())) {
-                if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    throw new MissingAuthenticationHeader();
-                }
                 MultiValueMap<String, ResponseCookie> cookies = exchange.getResponse().getCookies();
                 ResponseCookie accessTokenCookie = cookies.getFirst("access_token");
-
+                System.out.println("Cookie "+accessTokenCookie);
                 String authHeader = "";
                 if (accessTokenCookie != null) {
                     authHeader = accessTokenCookie.getValue();
+                    String token = new String(Base64.getUrlDecoder().decode(authHeader));
+                    authHeader = "Bearer "+token;
+                    System.out.println("Cookie "+authHeader);
                 } else {
                     var authHeaders = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
                     if (authHeaders == null || authHeaders.isEmpty()) {

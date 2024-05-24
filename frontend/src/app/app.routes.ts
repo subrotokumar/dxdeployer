@@ -1,11 +1,31 @@
 import { Routes } from '@angular/router';
-import { LoginScreen } from './features/auth/login/login.component';
-import { RegisterScreen } from './features/auth/register/register.component';
-import { HomeComponent } from './features/home/home.component';
+import { HomeComponent } from './presentation/home/home.component';
+import { LoginScreen } from './presentation/auth/login/login.component';
+import { RegisterScreen } from './presentation/auth/register/register.component';
+import { DashboardComponent } from './presentation/dashboard/dashboard.component';
+import { authGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginScreen },
-  { path: 'register', component: RegisterScreen },
+  { 
+    path: '', 
+    redirectTo: 'home', 
+    pathMatch: 'full' 
+  },
+  { 
+    path: 'home', 
+    component: HomeComponent
+  },
+  { 
+    path: 'login', 
+    component: LoginScreen
+  },
+  { 
+    path: 'register', 
+    component: RegisterScreen 
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [ authGuard ]
+  }
 ];

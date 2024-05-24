@@ -1,0 +1,35 @@
+<nav class="flex justify-between bg-[#0e0e0e] px-4 py-2">
+    <ul class="flex items-center">
+        <li class="mr-4"><img src="/assets/meteor-light.png" class="h-5"></li>
+        <li class="mr-4">Name</li>
+        <li class="mr-4">GroupName</li>
+    </ul>
+    <ul class="flex items-center">
+        <li class="mr-4 text-gray-400">
+            <button class="px-2 py-1 border rounded-md">Feedback</button>
+        </li>
+        <li class="mr-4 text-gray-400">Changelog</li>
+        <li class="mr-4 text-gray-400">Help</li>
+        <li class="mr-4 text-gray-400">Docs</li>
+        <li class="mr-4 text-gray-400">Bell</li>
+        <li class="mr-4 text-gray-400">Profile</li>
+        <li class="mr-4 ml-2 text-gray-400">
+            <i class="p-1 border rounded-full fa-bell fa-regular"></i>
+        </li>
+        <li class="mr-4 ml-2 text-gray-400">
+            <i class="p-1 border rounded-full fa-solid fa-user"></i>
+        </li>
+    </ul>
+</nav>
+<div class="text-white">
+    <mat-tab-group class="text-white">
+        <mat-tab label="First"> Content 1 </mat-tab>
+        <mat-tab label="Second"> Content 2 </mat-tab>
+        <mat-tab label="Third"> Content 3 </mat-tab>
+    </mat-tab-group>    
+</div>
+<main>
+    <p>dashboard works!</p>
+    <p>{{myInfo()}}</p>
+    <button (click)="getUserData()">GetDetail</button>
+</main>

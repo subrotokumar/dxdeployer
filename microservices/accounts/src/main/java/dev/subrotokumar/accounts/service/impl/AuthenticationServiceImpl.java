@@ -1,11 +1,15 @@
 package dev.subrotokumar.accounts.service.impl;
 
+import java.util.Base64;
 import java.util.UUID;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.google.common.net.HttpHeaders;
 
 import dev.subrotokumar.accounts.dto.AuthenticationRequestDto;
 import dev.subrotokumar.accounts.dto.AuthenticationResponseDto;
@@ -21,7 +25,6 @@ import dev.subrotokumar.accounts.mapper.AccountMapper;
 import dev.subrotokumar.accounts.repository.AccountRepository;
 import dev.subrotokumar.accounts.repository.RefreshTokenRepository;
 import dev.subrotokumar.accounts.service.AuthenticationService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +60,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponseDto refreshToken(RefreshTokenRequestDto request) {
         var username = refreshJwtService.extractUsername(request.getRefreshToken());
-        var account = accountRepository.findByUsername(username).orElseThrow(() -> new AccountNotFoundException("Account not found"));
+        var account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
 
         var accessToken = accessJwtService.generateToken(account);
         var refreshToken = refreshJwtService.generateToken(account);
@@ -69,8 +73,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .type(TokenType.REFRESH_TOKEN)
                         .tokenId(UUID.nameUUIDFromBytes(refreshToken.getBytes()))
                         .expiry(refreshJwtService.extractExpiration(refreshToken))
-                        .build()
-        );
+                        .build());
 
         return AuthenticationResponseDto
                 .builder()
@@ -79,23 +82,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                 .builder()
                                 .token(accessToken)
                                 .expiry(accessJwtService.extractExpiration(accessToken))
-                                .build()
-                )
+                                .build())
                 .refreshToken(
                         TokenDto
                                 .builder()
                                 .token(refreshToken)
-                                .expiry(refreshJwtService.extractExpiration(refreshToken))
-                                .build()
-                )
+                                .expiry(refreshJwtService
+                                        .extractExpiration(refreshToken))
+                                .build())
                 .build();
     }
 
     @Override
     public AuthenticationResponseDto authenticate(AuthenticationRequestDto request, HttpServletResponse response) {
-        authenticationManager.
-                authenticate(
-                        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         log.info("Authorized");
 
@@ -114,8 +115,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .type(TokenType.REFRESH_TOKEN)
                         .tokenId(UUID.nameUUIDFromBytes(refreshToken.getBytes()))
                         .expiry(refreshJwtService.extractExpiration(refreshToken))
-                        .build()
-        );
+                        .build());
 
         var authResponse = AuthenticationResponseDto
                 .builder()
@@ -124,32 +124,37 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                 .builder()
                                 .token(accessToken)
                                 .expiry(accessJwtService.extractExpiration(accessToken))
-                                .build()
-                )
+                                .build())
                 .refreshToken(
                         TokenDto
                                 .builder()
                                 .token(refreshToken)
-                                .expiry(refreshJwtService.extractExpiration(refreshToken))
-                                .build()
-                )
+                                .expiry(refreshJwtService
+                                        .extractExpiration(refreshToken))
+                                .build())
                 .build();
 
-        // Create secure cookie
-        Cookie cookie1 = new Cookie("access_token", "Bearer " + authResponse.getAccessToken().getToken());
-        cookie1.setHttpOnly(true);
-        cookie1.setSecure(true); // Use true if HTTPS is enabled
-        cookie1.setPath("/");
-        cookie1.setMaxAge(7 * 24 * 60 * 60);
+        String encodedAccessToken = Base64.getUrlEncoder().encodeToString(accessToken.getBytes());
+        String encodedRefreshToken = Base64.getUrlEncoder().encodeToString(refreshToken.getBytes());
 
-        Cookie cookie2 = new Cookie("refresh_token", authResponse.getRefreshToken().getToken());
-        cookie2.setHttpOnly(true);
-        cookie2.setSecure(true); // Use true if HTTPS is enabled
-        cookie2.setPath("/");
-        cookie2.setMaxAge(7 * 24 * 60 * 60);
+        ResponseCookie cookie1 = ResponseCookie
+                .from("access_token", encodedAccessToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
 
-        response.addCookie(cookie1);
-        response.addCookie(cookie2);
+        ResponseCookie cookie2 = ResponseCookie
+                .from("refresh_token", encodedRefreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie1.toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie2.toString());
 
         return authResponse;
     }

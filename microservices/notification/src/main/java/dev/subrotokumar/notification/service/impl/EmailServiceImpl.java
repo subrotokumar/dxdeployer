@@ -13,8 +13,8 @@ import dev.subrotokumar.notification.service.EmailService;
 
 @Service
 public class EmailServiceImpl implements EmailService {
- 
-    @Autowired private JavaMailSender javaMailSender;
+    @Autowired
+    private JavaMailSender emailSender;
  
     @Value("${spring.mail.username}") private String sender;
  
@@ -29,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
             mailMessage.setText(details.getMsgBody());
             mailMessage.setSubject(details.getSubject());
  
-            javaMailSender.send(mailMessage);
+            // emailSender.send(mailMessage);
             return true;
         }
         catch (MailException e) {

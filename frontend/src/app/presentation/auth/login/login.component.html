@@ -1,0 +1,95 @@
+<div class="bg-[url('assets/earth2.jpg')] bg-cover bg-no-repeat">
+    <div class="flex flex-col bg-black bg-opacity-80 w-screen min-h-screen">
+        <nav class="flex justify-between p-4">
+            <div>
+                <img src="/assets/meteor-light.png" routerLink="/home" class="w-8 h-8">
+            </div>
+            <div>
+                <button class="mr-4 text-gray-400">
+                    Connect
+                </button>
+                <button routerLink="/register" class="border-gray-500 hover:bg-gray-500 px-3 py-1 border rounded-md">
+                    Sign Up
+                </button>
+            </div>
+        </nav>
+
+        <!-- BODY -->
+        @if(mainAuthScreen()){
+            <div class="flex flex-col flex-1 justify-center items-center my-20 overflow-y-auto no-scrollbar">
+                <p class="mb-3 font-bold text-3xl">Login to DxDeployer</p>
+                
+                <button class="bg-[#1f1f1f] hover:bg-white hover:bg-opacity-40 mt-4 px-4 py-2 rounded-lg w-80 font-bold">
+                    <i class="mx-1 fa-github fab"></i>
+                    Log in with GitHub
+                </button>
+                <button class="bg-indigo-500 hover:bg-indigo-600 mt-4 px-4 py-2 rounded-lg w-80"> 
+                    <i class="mx-1 fa-link fa-solid fas"></i>
+                    Login with Magiclink
+                </button>
+    
+                <div class="border-gray-500 my-4 border border-b-transparent w-80"></div>
+    
+                <button (click)="emailAuth()" class="border-gray-400 hover:bg-white hover:bg-opacity-15 px-4 py-2 border rounded-lg w-80">
+                    <i class="mx-1 fa-solid fa-user"></i>
+                    Username / Password 
+                </button>
+            </div>
+        } @else{
+            <form [formGroup]="loginGroup" class="flex flex-col flex-1 justify-center items-center my-20 overflow-y-auto no-scrollbar">
+                <p class="mb-3 font-bold text-3xl">Login with Password</p>
+                
+                <input [formControl]="usernameController" placeholder="Username" type="text" class="bg-white hover:bg-gray-500 bg-opacity-15 hover:bg-opacity-40 mt-4 px-4 py-2 focus:outline-none rounded-lg w-80">
+
+                <input [formControl]="passwordController" placeholder="Password" type="password" class="bg-white hover:bg-gray-500 bg-opacity-10 hover:bg-opacity-40 mt-4 px-4 py-2 focus:outline-none rounded-lg w-80">
+                
+                <div class="flex justify-center my-2 w-80">
+                    <button class="opacity-60 hover:opacity-80 text-[#F6DCAC]">Forget Password?</button>
+                </div>
+                <div class="border-gray-500 mb-3 border border-b-transparent w-80"></div>
+                
+                <div class="flex justify-between w-80">
+                    <button (click)="mainAuth()" class="border-gray-400 hover:bg-white hover:bg-opacity-15 px-4 py-2 border rounded-lg w-36">
+                        Go Back 
+                    </button>
+                    <button (click)="loginWithUserPassword()" class="bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded-lg w-36"> 
+                        Continue
+                    </button>
+                </div>
+                
+            </form>
+        }
+
+
+        <!-- Footer -->
+        <div>
+            <div class="bg-white bg-opacity-20 h-[0.5px]"></div>
+            <div class="flex flex-row justify-center p-4 text-indigo-400 hover:text-indigo-200">
+                <button routerLink="/register">
+                    Don't have a account? Sign up
+                </button>
+            </div>
+            <div class="bg-white bg-opacity-20 h-[0.5px]"></div>
+
+
+            <div class="flex items-center h-16 text-sm">
+                <li class="flex items-center ml-5">
+                    <img src="/assets/meteor-light.png" class="mr-3 w-5">
+                    <span>© 2024</span>
+                </li>
+                <ul class="flex flex-1 items-center pl-10 text-gray-400 overflow-hidden">
+                    <li class="flex-1 hover:text-white">Home</li>
+                    <li class="flex-1 hover:text-white">Docs</li>
+                    <li class="flex-1 hover:text-white">Help</li>
+                    <li class="flex-1 hover:text-white">Blog</li>
+                    <li class="flex-1 hover:text-white">Pricing</li>
+                    <li class="flex-1 hover:text-white">Sign up</li>
+                    <li class="flex-1 hover:text-white">Architecture</li>
+                </ul>
+                <li class="flex items-center">
+                    <img src="/assets/github-light.png" class="mr-3 ml-3 w-5">
+                </li>
+            </div>
+        </div>
+    </div>
+</div>
