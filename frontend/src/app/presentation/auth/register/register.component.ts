@@ -1,12 +1,12 @@
 import { Component, OnInit, Signal, computed } from '@angular/core';
 import { FormControl, FormGroup, PatternValidator, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { PASSWORD_REGEX } from '../../../core/constants';
+import { PASSWORD_REGEX } from '../../../core/constants/constants';
 import { AccountsService } from '../../../services/accounts.service';
-import { Assets } from '../../../core/assets';
+import { Assets } from '../../../core/types/assets';
 import {MatSnackBar} from "@angular/material/snack-bar"
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { ErrorResponse } from '../../../core/types';
+import { ErrorResponse } from '../../../core/types/types';
 
 @Component({
   selector: 'RegisterScreen',

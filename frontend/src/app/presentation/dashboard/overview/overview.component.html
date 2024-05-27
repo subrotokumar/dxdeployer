@@ -1,0 +1,96 @@
+<div class="flex mx-9 mt-4">
+    <div class="flex flex-1 items-center border-gray-700 px-3 py-1 border rounded-lg">
+        <i class="fa-search fas"></i>
+        <input type="text" placeholder="Search project..."
+            class="flex-1 bg-transparent mx-3 py-1 border-none outline-none focus:outline-none">
+    </div>
+    <brn-select class="inline-block mx-3 dark" placeholder="Sort">
+        <hlm-select-trigger class="w-56">
+            <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content>
+            <hlm-option value="activity">Sort By Activity</hlm-option>
+            <hlm-option value="name">Sort By Name</hlm-option>
+        </hlm-select-content>
+    </brn-select>
+
+
+    <!-- Create Project -->
+    <div class="flex items-center border-gray-700 bg-white px-4 border rounded-md text-black">
+        <button [brnMenuTriggerFor]="menu">Add New... <span class="font-bold text-sm">⌘</span> </button>
+    </div>
+
+    <ng-template #menu>
+        <hlm-menu class="border">
+            <hlm-menu-label>Project</hlm-menu-label>
+            <hlm-menu-separator />
+            <hlm-menu-group>
+                <button hlmMenuItem>
+                    React
+                    <hlm-menu-shortcut>
+                        <i class="text-blue-600 fa-react fab"></i>
+                    </hlm-menu-shortcut>
+                </button>
+
+                <hlm-menu-separator />
+
+                <button hlmMenuItem>
+                    Angular
+                    <hlm-menu-shortcut>
+                        <i class="text-red-600 fa-angular fab fab"></i>
+                    </hlm-menu-shortcut>
+                </button>
+
+                <hlm-menu-separator />
+
+                <button hlmMenuItem>
+                    Vue
+                    <hlm-menu-shortcut>
+                        <i class="text-green-400 fa-vuejs fab fab fab fab"></i>
+                    </hlm-menu-shortcut>
+                </button>
+
+                <hlm-menu-separator />
+
+                <button hlmMenuItem>
+                    Vanilla Js
+                    <hlm-menu-shortcut>
+                        <i class="text-yellow-400 fa-js fab fab fab"></i>
+                    </hlm-menu-shortcut>
+                </button>
+            </hlm-menu-group>
+        </hlm-menu>
+    </ng-template>
+
+</div>
+<div class="flex justify-center min-h-[90vh]">
+    <div class="box-border gap-5 grid md:grid-cols-2 lg:grid-cols-3 py-5 dark">
+        @for(project of projects(); track project){
+        <section hlmCard class="md:px-3 lg:px-6 md:py-2 lg:py-4 w-[30vw] h-[190px] dark">
+            <div hlmCardHeader class="p-4">
+                <div hlmCardTitle class="flex flex-row items-center">
+                    <img src="assets/icons/react.png" class="mr-4 rounded-full h-6">
+                    <div class="flex flex-col">
+                        <span class="font-normal text-xs">{{project.title}}</span>
+                        <span class="font-normal text-gray-400 text-xs">{{project.title}}localhost.com</span>
+                    </div>
+                    <div class="flex-1"></div>
+                    <i class="fa-ellipsis fa-solid"></i>
+                </div>
+                <div class="py-2">
+                    <a target="_blank" href="https://github.com/subrotokumar/dxd-paas" hlmBadge variant="secondary">
+                        <i class="fa-github fab"></i>
+                        &nbsp;
+                        {{project.githubUrl.replaceAll("https://github.com","")}}
+                    </a>
+                </div>
+
+
+                <p hlmCardDescription class="mt-2 line-clamp-2 text-justify text-xs">
+                    {{project.description}}
+                </p>
+            </div>
+        </section>
+        }
+    </div>
+</div>

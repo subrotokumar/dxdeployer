@@ -1,35 +1,79 @@
-<nav class="flex justify-between bg-[#0e0e0e] px-4 py-2">
+<nav class="box-border flex justify-between bg-[#0e0e0e] px-4 py-2 max-w-[100vw] dark">
     <ul class="flex items-center">
         <li class="mr-4"><img src="/assets/meteor-light.png" class="h-5"></li>
-        <li class="mr-4">Name</li>
-        <li class="mr-4">GroupName</li>
+        <li class="mr-4 font-semibold">{{myInfo()?.data?.username}} 's</li>
+        <li class="mr-4">
+            <brn-select class="inline-block border-none max-h-[40px] dark" placeholder="My Project">
+                <hlm-select-trigger class="h-10">
+                    <hlm-select-value />
+                </hlm-select-trigger>
+                <hlm-select-content class="w-56">
+                    <hlm-option value="Refresh">Refresh</hlm-option>
+                    <hlm-option value="Settings">Settings</hlm-option>
+                    <hlm-option value="Help">Help</hlm-option>
+                    <hlm-option value="Signout">Sign out</hlm-option>
+                </hlm-select-content>
+            </brn-select>
+        </li>
     </ul>
     <ul class="flex items-center">
         <li class="mr-4 text-gray-400">
-            <button class="px-2 py-1 border rounded-md">Feedback</button>
+            <button class="hover:bg-gray-700 px-2 py-1 border rounded-md hover:text-gray-200">Feedback</button>
         </li>
-        <li class="mr-4 text-gray-400">Changelog</li>
-        <li class="mr-4 text-gray-400">Help</li>
-        <li class="mr-4 text-gray-400">Docs</li>
-        <li class="mr-4 text-gray-400">Bell</li>
-        <li class="mr-4 text-gray-400">Profile</li>
-        <li class="mr-4 ml-2 text-gray-400">
+        <li class="mr-4 text-gray-400 hover:text-gray-200">Changelog</li>
+        <li class="mr-4 text-gray-400 hover:text-gray-200">Help</li>
+        <li class="mr-4 text-gray-400 hover:text-gray-200">Docs</li>
+        <li class="mr-4 text-gray-400 hover:text-gray-200">Profile</li>
+        <!-- Bell Icon -->
+        <li class="hover:bg-gray-600 mr-4 ml-2 rounded-full text-gray-400 hover:text-white">
             <i class="p-1 border rounded-full fa-bell fa-regular"></i>
         </li>
         <li class="mr-4 ml-2 text-gray-400">
-            <i class="p-1 border rounded-full fa-solid fa-user"></i>
+            <hlm-sheet side="right" class="dark">
+                <button brnSheetTrigger><i class="p-1 border rounded-full hover:text-gray-200 fa-regular fa-user"></i></button>
+                <hlm-sheet-content *brnSheetContent='let ctx' class="dark">
+                    <hlm-sheet-header>
+                        <h3 hlmSheetTitle>Edit Profile</h3>
+                        <p hlmSheetDescription>Make changes to your profile here. Click save when you're done.</p>
+                    </hlm-sheet-header>
+                </hlm-sheet-content>
+            </hlm-sheet>
         </li>
     </ul>
 </nav>
-<div class="text-white">
-    <mat-tab-group class="text-white">
-        <mat-tab label="First"> Content 1 </mat-tab>
-        <mat-tab label="Second"> Content 2 </mat-tab>
-        <mat-tab label="Third"> Content 3 </mat-tab>
-    </mat-tab-group>    
+<div class="box-border">
+    <hlm-tabs tab='account' class='bg-transparent'>
+        <hlm-tabs-list class='flex justify-start bg-[#0e0e0e]' aria-label='Project Section'>
+            <button class="hover:text-gray-300" hlmTabsTrigger='account'>Account</button>
+            <button class="hover:text-gray-300" hlmTabsTrigger='integration'>Integration</button>
+            <button class="hover:text-gray-300" hlmTabsTrigger='acitvity'>Acitvity</button>
+            <button class="hover:text-gray-300" hlmTabsTrigger='domains'>Domains</button>
+            <button class="hover:text-gray-300" hlmTabsTrigger='usage'>Usage</button>
+            <button class="hover:text-gray-300" hlmTabsTrigger='monitoring'>Monitoring</button>
+            <button class="hover:text-gray-300" hlmTabsTrigger='settings'>Settings</button>
+        </hlm-tabs-list>
+        <div hlmTabsContent='account'>
+            <overview/>
+        </div>
+        <div hlmTabsContent='integration'>
+            Change your password here
+        </div>
+        <div hlmTabsContent='acitvity'>
+            Acitvity
+        </div>
+        <div hlmTabsContent='domains'>
+            Domains
+        </div>
+        <div hlmTabsContent='usage'>
+            Usage
+        </div>
+        <div hlmTabsContent='monitoring'>
+            Monitoring
+        </div>
+        <div hlmTabsContent='settings'>
+            Settings
+        </div>
+    </hlm-tabs>
 </div>
-<main>
-    <p>dashboard works!</p>
-    <p>{{myInfo()}}</p>
-    <button (click)="getUserData()">GetDetail</button>
-</main>
+<!-- Footer -->
+<dashboard-footer/>

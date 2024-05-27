@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 import { register } from 'module';
-import { ApiResponse, LoginResponse, UserDetailResponse } from '../core/types';
+import { ApiResponse, LoginResponse, UserDetailResponse } from '../core/types/types';
 import { HttpResponse } from '@angular/common/http';
 import { environment } from '../../enviroments/environment.prod';
 
@@ -32,7 +32,7 @@ export class AccountsService {
     password,
   }: AuthenticateRequestBody) => {
     return this.apiService.post<HttpResponse<LoginResponse>>(
-      '/api/v1/account/auth/login',
+      `${environment.accountService}/auth/login`,
       { username, password },
       { observe: 'events' },
     );

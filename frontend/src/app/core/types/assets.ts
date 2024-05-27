@@ -4,5 +4,8 @@ export const Assets = {
     },
     Lottie: {
         space: "assets/animation/space.json"
+    },
+    Logo: {
+        react: "assets/icons/react.png"
     }
 }

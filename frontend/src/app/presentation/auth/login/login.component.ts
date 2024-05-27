@@ -3,8 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { AccountsService } from '../../../services/accounts.service';
-import { HttpResponse } from '@angular/common/http';
-import { ErrorResponse } from '../../../core/types';
+import { ErrorResponse } from '../../../core/types/types';
 
 @Component({
   selector: 'LoginScreen',

@@ -42,9 +42,12 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/account/auth/**", "/api/v1/account/health", "/api/v1/account/swagger-ui/**",
                                         "/api/v1/account/v3/api-docs/**", "/api/v1/account/user", "/actuator/**")
                                 .permitAll()
-                                .anyRequest().authenticated())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .anyRequest().authenticated()
+                )
+                .sessionManagement(
+                    session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(AbstractHttpConfigurer::disable) // Disable basic authentication
                 .formLogin(AbstractHttpConfigurer::disable); // Disable form login;

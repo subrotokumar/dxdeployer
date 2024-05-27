@@ -3,7 +3,7 @@ import { HomeComponent } from './presentation/home/home.component';
 import { LoginScreen } from './presentation/auth/login/login.component';
 import { RegisterScreen } from './presentation/auth/register/register.component';
 import { DashboardComponent } from './presentation/dashboard/dashboard.component';
-import { authGuard } from './shared/guards/auth.guard';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { 
