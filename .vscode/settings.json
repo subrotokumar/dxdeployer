@@ -12,8 +12,8 @@
     "**/.settings": false,
     "**/.factorypath": false,
     "node_modules": true,
-    "**/.idea": false,
-    "**/.vscode": false,
+    "**/.idea": true,
+    "**/.vscode": true,
     "**/.husky": false,
     ".vscode": true,
     ".husky": true

@@ -41,7 +41,20 @@
                 
                 <input [formControl]="usernameController" placeholder="Username" type="text" class="bg-white hover:bg-gray-500 bg-opacity-15 hover:bg-opacity-40 mt-4 px-4 py-2 focus:outline-none rounded-lg w-80">
 
-                <input [formControl]="passwordController" placeholder="Password" type="password" class="bg-white hover:bg-gray-500 bg-opacity-10 hover:bg-opacity-40 mt-4 px-4 py-2 focus:outline-none rounded-lg w-80">
+                <div [formControl]="usernameController" placeholder="Username" type="text" class="flex bg-white hover:bg-gray-500 bg-opacity-15 hover:bg-opacity-40 mt-4 py-2 focus:outline-none rounded-lg w-80">
+                    <input [formControl]="passwordController" class="flex-1 bg-transparent" placeholder="Password" class="flex-1 px-4 focus:outline-none bg-transparent" [type]="showPassword() ? 'text':'password'">
+                    <button (click)="toggleShowPassword()" class="opacity-80 mr-2">
+                        @if(!passwordController.untouched){
+                            @if(showPassword()){
+                                <i class="text-gray-400 fa-eye-slash far"></i>
+                            } @else {
+                                <i class="text-gray-400 fa-eye far far"></i>
+                            }
+                        }
+                    </button>
+                    
+                </div>
+                <!-- <input [formControl]="passwordController" placeholder="Password" type="password" class="bg-white hover:bg-gray-500 bg-opacity-10 hover:bg-opacity-40 mt-4 px-4 py-2 focus:outline-none rounded-lg w-80"> -->
                 
                 <div class="flex justify-center my-2 w-80">
                     <button class="opacity-60 hover:opacity-80 text-[#F6DCAC]">Forget Password?</button>
@@ -93,3 +106,4 @@
         </div>
     </div>
 </div>
+<hlm-toaster />

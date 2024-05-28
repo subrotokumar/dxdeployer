@@ -3,11 +3,11 @@ DxD: Developer Experience Deployer is a cutting-edge Platform as a Service (PaaS
 
 ## Tect Used
 
-<img src="https://skillicons.dev/icons?i=java,spring,aws,docker,bash,kafka,redis,postgres,mongo,prometheus,loki,=light">
+<img src="https://skillicons.dev/icons?i=java,spring,aws,docker,bash,kafka,redis,postgres,mongo,prometheus,loki=light">
 
 ## Dependency
 - JDK 17 LTS +
-- Ansible-avault
+- Ansible-Avault
 - Docker/Podman
 
 ## Architecture Design
@@ -17,3 +17,8 @@ DxD: Developer Experience Deployer is a cutting-edge Platform as a Service (PaaS
 ![](./diagram/schema.png)
 
 [Project Link](http://github.com/subrotokumar/dxd-paas)
+
+## DEVELOPMENT Link:
+- pgddmin: http://localhost:5050
+- mongo-express: http://localhost:8081
+- Eureka: http://localhost:8761

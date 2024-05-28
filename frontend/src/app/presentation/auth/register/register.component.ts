@@ -3,7 +3,7 @@ import { FormControl, FormGroup, PatternValidator, ReactiveFormsModule, Validato
 import { RouterModule } from '@angular/router';
 import { PASSWORD_REGEX } from '../../../core/constants/constants';
 import { AccountsService } from '../../../services/accounts.service';
-import { Assets } from '../../../core/types/assets';
+import { Assets } from '../../../core/constants/assets';
 import {MatSnackBar} from "@angular/material/snack-bar"
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ErrorResponse } from '../../../core/types/types';

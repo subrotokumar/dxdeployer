@@ -1,25 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { Observable } from 'rxjs';
-import { register } from 'module';
-import { ApiResponse, LoginResponse, UserDetailResponse } from '../core/types/types';
+import { ApiResponse } from '../core/types/types';
 import { HttpResponse } from '@angular/common/http';
 import { environment } from '../../enviroments/environment.prod';
-
-interface AuthenticateRequestBody {
-  username: string;
-  password: string;
-}
-
-interface RegisterRequestBody {
-  username: string;
-  email: string;
-  password: string;
-}
-
-interface RefreshToken {
-  refreshToken: string;
-}
+import { AuthenticateRequestBody, LoginResponse, RefreshToken, RegisterRequestBody, UserDetailResponse } from '../core/types/accounts.types';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +43,7 @@ export class AccountsService {
   userDetail = () => {
     const accessToken = localStorage.getItem('access_token');
     return this.apiService.get<HttpResponse<ApiResponse<UserDetailResponse>>>(
-      '/api/v1/account/user',
+      `${environment.accountService}/user`,
       {
         observe: 'events',
         headers: {

@@ -26,6 +26,12 @@ import {
 import { HlmIconComponent } from '../../../shared/components/ui-icon-helm/src';
 import { Project } from '../../../core/types/project.types';
 import { HttpErrorResponse } from '@angular/common/http';
+import { toast } from 'ngx-sonner';
+import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
+import { ErrorResponse } from '../../../core/types/types';
+import { DashboardFooterComponent } from '../footer/footer.component';
+import { lucideLayoutGrid } from '@ng-icons/lucide';
+
 @Component({
   selector: 'overview',
   standalone: true,
@@ -50,11 +56,18 @@ import { HttpErrorResponse } from '@angular/common/http';
     HlmMenuShortcutComponent,
     HlmSubMenuComponent,
     HlmIconComponent,
+    HlmToasterComponent,
+    DashboardFooterComponent
   ],
   templateUrl: './overview.component.html',
 })
 export class OverviewComponent implements OnInit {
   projects = signal<Project[]>([]);
+
+  gridView = signal(false)
+
+  viewStyle(num:number){
+  }
 
   constructor(private projectService: ProjectService) {
     console.log("Overiew")
@@ -75,6 +88,17 @@ export class OverviewComponent implements OnInit {
       },
       error: (err) => {
         console.log(err)
+        this.showToast((err.error as ErrorResponse).message)
+      }
+    })
+  }
+
+  showToast(msg: string) {
+    toast('Event has been created', {
+      description: msg,
+      action: {
+        label: 'Close',
+        onClick: () => {},
       }
     })
   }

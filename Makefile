@@ -1,10 +1,10 @@
-accounts=microservices/config/src/main/resources/configurations/accounts.yaml
-project=microservices/config/src/main/resources/configurations/project.yaml
-gateway=microservices/config/src/main/resources/configurations/gateway.yaml
-discovery=microservices/config/src/main/resources/configurations/discovery.yaml
-payment=microservices/config/src/main/resources/configurations/payment.yaml
-notification=microservices/config/src/main/resources/configurations/notification.yaml
-config=microservices/config/src/main/resources/application.yaml
+accounts=services/config/src/main/resources/configurations/accounts.yaml
+project=services/config/src/main/resources/configurations/project.yaml
+gateway=services/config/src/main/resources/configurations/gateway.yaml
+discovery=services/config/src/main/resources/configurations/discovery.yaml
+payment=services/config/src/main/resources/configurations/payment.yaml
+notification=services/config/src/main/resources/configurations/notification.yaml
+config=services/config/src/main/resources/application.yaml
 
 encrypt:
 	@ansible-vault encrypt ${accounts} ${project} ${gateway} ${discovery} ${payment} ${notification}
@@ -20,9 +20,9 @@ git-commit:
 	@make commit
 
 build:
-	@./microservices/config/./mvnw clean package -f ./microservices/config
-	@./microservices/discovery/./mvnw clean package -f ./microservices/discovery
-	@@./microservices/gateway/./mvnw clean package -f ./microservices/gateway
+	@./services/config/./mvnw clean package -f ./services/config
+	@./services/discovery/./mvnw clean package -f ./services/discovery
+	@@./services/gateway/./mvnw clean package -f ./services/gateway
 
 up:
 	@docker-compose up

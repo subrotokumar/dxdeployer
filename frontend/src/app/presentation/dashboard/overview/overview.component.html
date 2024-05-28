@@ -4,6 +4,8 @@
         <input type="text" placeholder="Search project..."
             class="flex-1 bg-transparent mx-3 py-1 border-none outline-none focus:outline-none">
     </div>
+
+
     <brn-select class="inline-block mx-3 dark" placeholder="Sort">
         <hlm-select-trigger class="w-56">
             <hlm-select-value />
@@ -14,6 +16,28 @@
         </hlm-select-content>
     </brn-select>
 
+    <div class="flex border-gray-700 mr-2 p-[1px] border rounded-md text-white">
+        @if(gridView()){
+            <button class="box-border flex justify-center items-center bg-gray-900 m-[1px] rounded-sm w-[36px] h-[36px]" (click)="gridView.set(true)">
+                <i class="fa-solid fa-table-cells-large"></i>
+            </button>
+        } @else {
+            <button class="box-border flex justify-center items-center m-[1px] rounded-sm w-[36px] h-[36px]" (click)="gridView.set(true)">
+                <i class="fa-solid fa-table-cells-large"></i>
+            </button>
+        }
+
+        @if(gridView()){
+            <button class="flex justify-center items-center m-[1px] rounded-sm w-[36px] h-[36px]" (click)="gridView.set(false)">
+                <i class="fa-list fa-solid"></i>
+            </button>
+        } @else {
+            <button class="flex justify-center items-center bg-gray-900 m-[1px] rounded-sm w-[36px] h-[36px]" (click)="gridView.set(false)">
+                <i class="fa-list fa-solid"></i>
+
+            </button>
+        }
+    </div>
 
     <!-- Create Project -->
     <div class="flex items-center border-gray-700 bg-white px-4 border rounded-md text-black">
@@ -21,14 +45,14 @@
     </div>
 
     <ng-template #menu>
-        <hlm-menu class="border">
+        <hlm-menu class="border dark">
             <hlm-menu-label>Project</hlm-menu-label>
             <hlm-menu-separator />
             <hlm-menu-group>
                 <button hlmMenuItem>
                     React
                     <hlm-menu-shortcut>
-                        <i class="text-blue-600 fa-react fab"></i>
+                        <i class="text-base text-blue-400 fa-react fab"></i>
                     </hlm-menu-shortcut>
                 </button>
 
@@ -37,7 +61,7 @@
                 <button hlmMenuItem>
                     Angular
                     <hlm-menu-shortcut>
-                        <i class="text-red-600 fa-angular fab fab"></i>
+                        <i class="text-base text-red-400 fa-angular fab fab"></i>
                     </hlm-menu-shortcut>
                 </button>
 
@@ -46,7 +70,7 @@
                 <button hlmMenuItem>
                     Vue
                     <hlm-menu-shortcut>
-                        <i class="text-green-400 fa-vuejs fab fab fab fab"></i>
+                        <i class="text-base text-green-400 fa-vuejs fab fab fab fab"></i>
                     </hlm-menu-shortcut>
                 </button>
 
@@ -55,7 +79,7 @@
                 <button hlmMenuItem>
                     Vanilla Js
                     <hlm-menu-shortcut>
-                        <i class="text-yellow-400 fa-js fab fab fab"></i>
+                        <i class="text-base text-yellow-400 fa-js fab fab fab"></i>
                     </hlm-menu-shortcut>
                 </button>
             </hlm-menu-group>
@@ -64,33 +88,64 @@
 
 </div>
 <div class="flex justify-center min-h-[90vh]">
-    <div class="box-border gap-5 grid md:grid-cols-2 lg:grid-cols-3 py-5 dark">
+    <div [class]="gridView() ? 'box-border gap-5 grid md:grid-cols-2 lg:grid-cols-3 py-5 dark': 'w-[94vw] py-5 px-2 flex flex-col' ">
         @for(project of projects(); track project){
-        <section hlmCard class="md:px-3 lg:px-6 md:py-2 lg:py-4 w-[30vw] h-[190px] dark">
-            <div hlmCardHeader class="p-4">
-                <div hlmCardTitle class="flex flex-row items-center">
-                    <img src="assets/icons/react.png" class="mr-4 rounded-full h-6">
-                    <div class="flex flex-col">
-                        <span class="font-normal text-xs">{{project.title}}</span>
-                        <span class="font-normal text-gray-400 text-xs">{{project.title}}localhost.com</span>
+        @if(gridView()){
+            <section hlmCard
+                class="hover:border-gray-500 md:px-3 lg:px-6 md:py-2 lg:py-4 hover:border w-[30vw] h-[190px] dark">
+                <div hlmCardHeader class="p-4">
+                    <div hlmCardTitle class="flex flex-row items-center">
+                        <img src="assets/icons/react.png" class="mr-4 rounded-full h-6">
+                        <div class="flex flex-col">
+                            <span class="font-normal text-xs">{{project.title}}</span>
+                            <span class="font-normal text-gray-400 text-xs">{{project.title}}localhost.com</span>
+                        </div>
+                        <div class="flex-1"></div>
+                        <i class="fa-ellipsis fa-solid"></i>
                     </div>
-                    <div class="flex-1"></div>
-                    <i class="fa-ellipsis fa-solid"></i>
-                </div>
-                <div class="py-2">
-                    <a target="_blank" href="https://github.com/subrotokumar/dxd-paas" hlmBadge variant="secondary">
-                        <i class="fa-github fab"></i>
-                        &nbsp;
-                        {{project.githubUrl.replaceAll("https://github.com","")}}
-                    </a>
-                </div>
+                    <div class="py-2">
+                        <a target="_blank" href="https://github.com/subrotokumar/dxd-paas" hlmBadge variant="secondary">
+                            <i class="fa-github fab"></i>
+                            &nbsp;
+                            {{project.githubUrl.replaceAll("https://github.com/","").replaceAll("http://github.com/","")}}
+                        </a>
+                    </div>
 
 
-                <p hlmCardDescription class="mt-2 line-clamp-2 text-justify text-xs">
-                    {{project.description}}
-                </p>
-            </div>
-        </section>
+                    <p hlmCardDescription class="mt-2 line-clamp-2 text-justify text-xs">
+                        {{project.description}}
+                    </p>
+                </div>
+            </section>
+        } @else {
+            <section hlmCard
+                class="hover:border-gray-500 mt-3 md:px-3 hover:border h-[140px] dark">
+                <div hlmCardHeader class="p-4">
+                    <div hlmCardTitle class="flex flex-row items-center">
+                        <img src="assets/icons/react.png" class="mr-4 rounded-full h-6">
+                        <div class="flex flex-col">
+                            <span class="font-normal text-xs">{{project.title}}</span>
+                            <span class="font-normal text-gray-400 text-xs">{{project.title}}localhost.com</span>
+                        </div>
+                        <div class="flex-1"></div>
+                        <i class="fa-ellipsis fa-solid"></i>
+                    </div>
+                    <div class="py-2">
+                        <a target="_blank" href="https://github.com/subrotokumar/dxd-paas" hlmBadge variant="secondary">
+                            <i class="fa-github fab"></i>
+                            &nbsp;
+                            {{project.githubUrl.replaceAll("https://github.com/","").replaceAll("http://github.com/","")}}
+                        </a>
+                    </div>
+                    <p hlmCardDescription class="mt-2 line-clamp-1 text-justify text-xs">
+                        {{project.description}}
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur aliquam dolores iusto corporis dolor quod dolorem similique? Veniam, rerum. Aperiam natus nobis, fugiat quas fugit voluptatibus sint dolore provident ex!
+                    </p>
+                </div>
+            </section>
         }
+    }
     </div>
 </div>
+<!-- footer -->
+<dashboard-footer />

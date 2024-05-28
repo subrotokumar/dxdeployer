@@ -4,14 +4,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { AccountsService } from '../../../services/accounts.service';
 import { ErrorResponse } from '../../../core/types/types';
-
+import { toast } from 'ngx-sonner';
+import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
 @Component({
   selector: 'LoginScreen',
   standalone: true,
-  imports: [RouterModule, ReactiveFormsModule],
+  imports: [RouterModule, ReactiveFormsModule, HlmToasterComponent],
   templateUrl: './login.component.html',
 })
 export class LoginScreen implements OnDestroy {
+
+  showPassword = signal(false);
+  toggleShowPassword() {
+    this.showPassword.update(v => !v)
+  }
 
   constructor(
     private snackBar: MatSnackBar,
@@ -63,8 +69,15 @@ export class LoginScreen implements OnDestroy {
           if(refreshToken) localStorage.setItem("refresh_token", refreshToken)
       },
       error: (err) => {
-          var message = (err.error as ErrorResponse).message ?? 'Something went wrong';
-          this.snackBar.open(message, 'Close', {verticalPosition: 'top'});
+          let status = (err.error as ErrorResponse).statusCode;
+          let message = (err.error as ErrorResponse).message ?? 'Something went wrong';
+          toast(`User login failed`, {
+            description: `${message} - status ${status}`,
+            action: {
+              label: 'Close',
+              onClick: () => {},
+            }
+          })
       },
       complete: () => {
         this.router.navigate(['/dashboard'])

@@ -1,0 +1,107 @@
+<div class="dark">
+    <button [brnMenuTriggerFor]="menu">
+        <li class="hover:bg-gray-600 mr-4 ml-2 rounded-full text-gray-400 hover:text-white">
+            <i class="p-1 border rounded-full hover:text-gray-200 fa-regular fa-user"></i>
+        </li>
+    </button>
+
+    <ng-template #menu>
+        <hlm-menu class="w-56 dark">
+            <hlm-menu-label>My Account</hlm-menu-label>
+            <hlm-menu-separator />
+            <hlm-menu-group>
+                <button hlmMenuItem>
+                    <hlm-icon name="lucideUser" hlmMenuIcon />
+                    <span>Profile</span>
+                    <hlm-menu-shortcut>⇧⌘P</hlm-menu-shortcut>
+                </button>
+
+                <button hlmMenuItem>
+                    <hlm-icon name="lucideLayers" hlmMenuIcon />
+                    <span>Billing</span>
+                    <hlm-menu-shortcut>⌘B</hlm-menu-shortcut>
+                </button>
+
+                <button hlmMenuItem>
+                    <hlm-icon name="lucideCog" hlmMenuIcon />
+                    <span>Settings</span>
+                    <hlm-menu-shortcut>⌘S</hlm-menu-shortcut>
+                </button>
+
+                <button hlmMenuItem>
+                    <hlm-icon name="lucideKeyboard" hlmMenuIcon />
+                    <span>Keyboard Shortcuts</span>
+                    <hlm-menu-shortcut>⌘K</hlm-menu-shortcut>
+                </button>
+            </hlm-menu-group>
+
+            <hlm-menu-separator />
+
+            <hlm-menu-group>
+                <button hlmMenuItem>
+                    <hlm-icon name="lucideUserCircle" hlmMenuIcon />
+                    <span>Team</span>
+                    <hlm-menu-shortcut>⌘B</hlm-menu-shortcut>
+                </button>
+
+                <button hlmMenuItem [brnMenuTriggerFor]="invite">
+                    <hlm-icon name="lucideSmile" hlmMenuIcon />
+                    <span>Invite Users</span>
+                    <hlm-menu-item-sub-indicator />
+                </button>
+
+                <button hlmMenuItem>
+                    <hlm-icon name="lucidePlus" hlmMenuIcon />
+                    <span>New Team</span>
+                    <hlm-menu-shortcut>⌘+T</hlm-menu-shortcut>
+                </button>
+            </hlm-menu-group>
+
+            <hlm-menu-separator />
+
+            <hlm-menu-group>
+                <button hlmMenuItem>
+                    <hlm-icon name="lucideGithub" hlmMenuIcon />
+                    <span>Github</span>
+                </button>
+
+                <button hlmMenuItem>
+                    <hlm-icon name="lucideHelpCircle" hlmMenuIcon />
+                    <span>Support</span>
+                </button>
+
+                <button hlmMenuItem disabled>
+                    <hlm-icon name="lucideCode" hlmMenuIcon />
+                    <span>API</span>
+                </button>
+            </hlm-menu-group>
+
+            <hlm-menu-separator />
+
+            <button hlmMenuItem (click)="logout()">
+                <hlm-icon name="lucideLogOut" hlmMenuIcon />
+                <span>Logout</span>
+                <hlm-menu-shortcut>⇧⌘Q</hlm-menu-shortcut>
+            </button>
+        </hlm-menu>
+    </ng-template>
+
+    <ng-template #invite>
+        <hlm-sub-menu>
+            <button hlmMenuItem>
+                <hlm-icon name="lucideMail" hlmMenuIcon />
+                Email
+            </button>
+
+            <button hlmMenuItem>
+                <hlm-icon name="lucideMessageSquare" hlmMenuIcon />
+                Message
+            </button>
+            <hlm-menu-separator />
+            <button hlmMenuItem>
+                <hlm-icon name="lucidePlusCircle" hlmMenuIcon />
+                <span>More</span>
+            </button>
+        </hlm-sub-menu>
+    </ng-template>
+</div>

@@ -1,0 +1,22 @@
+<li class="mr-4 ml-2 text-gray-400">
+    <hlm-sheet side="right" class="dark">
+        <button brnSheetTrigger>
+            <i class="p-1 border rounded-full hover:text-gray-200 fa-bell fa-regular"></i>
+        </button>
+        <hlm-sheet-content *brnSheetContent='let ctx' class="dark">
+            <hlm-sheet-header>
+                <h3 hlmSheetTitle class="text-white">Notification</h3>
+                <p hlmSheetDescription>Make changes to your profile here. Click save when you're done.</p>
+            </hlm-sheet-header>
+            <hr class="my-2">
+            {{notification.length}}
+            @for(val of notification;track val){
+                <div class="flex">
+                    <hlm-skeleton class="my-3 w-12 h-12 aspect-square"/>
+                    <div class="mr-3"></div>
+                    <hlm-skeleton class="flex-1 my-3 h-12"/>
+                </div>  
+            }`
+        </hlm-sheet-content>
+    </hlm-sheet>
+</li>

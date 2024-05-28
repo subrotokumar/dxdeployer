@@ -14,17 +14,9 @@ import {
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
 import { HlmSelectImports } from '../../shared/components/ui-select-helm/src';
 import { OverviewComponent } from './overview/overview.component';
-
-import { BrnSheetContentDirective, BrnSheetTriggerDirective } from '@spartan-ng/ui-sheet-brain';
-import {
-  HlmSheetComponent,
-  HlmSheetContentComponent,
-  HlmSheetDescriptionDirective,
-  HlmSheetFooterComponent,
-  HlmSheetHeaderComponent,
-  HlmSheetTitleDirective,
-} from '../../shared/components/ui-sheet-helm/src';
 import { DashboardFooterComponent } from './footer/footer.component';
+import { NotificationComponent } from './notification/notification.component';
+import { ProfileIconComponent } from './profile/profile.component';
 
 
 @Component({
@@ -40,15 +32,9 @@ import { DashboardFooterComponent } from './footer/footer.component';
     BrnSelectImports,
     HlmSelectImports,
     OverviewComponent,
-    BrnSheetContentDirective, 
-    BrnSheetTriggerDirective,
-    HlmSheetComponent,
-    HlmSheetContentComponent,
-    HlmSheetDescriptionDirective,
-    HlmSheetFooterComponent,
-    HlmSheetHeaderComponent,
-    HlmSheetTitleDirective,
-    DashboardFooterComponent
+    DashboardFooterComponent,
+    NotificationComponent,
+    ProfileIconComponent
   ],
   templateUrl: './dashboard.component.html',
 })
