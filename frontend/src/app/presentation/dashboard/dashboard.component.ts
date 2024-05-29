@@ -1,30 +1,28 @@
 import { Component, OnInit, Signal, signal } from '@angular/core';
 import { AccountsService } from '../../services/accounts.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { ApiResponse, ErrorResponse, UserDetailResponse } from '../../core/types/types';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { ApiResponse, ErrorResponse } from '../../core/types/types';
 import {
   HlmTabsComponent,
   HlmTabsContentDirective,
   HlmTabsListComponent,
   HlmTabsTriggerDirective,
-} from '../../shared/components/ui-tabs-helm/src';
+} from '../../shared/components/tabs/src';
 
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
-import { HlmSelectImports } from '../../shared/components/ui-select-helm/src';
+import { HlmSelectImports } from '../../shared/components/select/src';
 import { OverviewComponent } from './overview/overview.component';
 import { DashboardFooterComponent } from './footer/footer.component';
 import { NotificationComponent } from './notification/notification.component';
 import { ProfileIconComponent } from './profile/profile.component';
+import { UserDetailResponse } from '../../core/types/accounts.types';
+import { toast } from 'ngx-sonner';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    MatTab, 
-    MatTabGroup,
     HlmTabsComponent,
     HlmTabsContentDirective,
     HlmTabsListComponent,
@@ -43,7 +41,7 @@ export class DashboardComponent implements OnInit{
 
   primary = "white"
 
-  constructor(private accountService: AccountsService, private snackBar: MatSnackBar){}
+  constructor(private accountService: AccountsService){}
 
   ngOnInit(): void {
     this.getUserData();
@@ -57,7 +55,13 @@ export class DashboardComponent implements OnInit{
       },
       error: (error: HttpErrorResponse) => {
         let message = (error.error as ErrorResponse).message
-        this.snackBar.open(message, 'Close', {verticalPosition: 'top'});
+        toast(`Operation Failed`, {
+          description: `${message} - status ${status}`,
+          action: {
+            label: 'Close',
+            onClick: () => {},
+          }
+        })
       }
     })
   }

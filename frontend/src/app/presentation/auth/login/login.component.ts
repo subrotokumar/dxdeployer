@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { AccountsService } from '../../../services/accounts.service';
 import { ErrorResponse } from '../../../core/types/types';
 import { toast } from 'ngx-sonner';
-import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
+import { HlmToasterComponent } from '../../../shared/components/sonner/src';
 @Component({
   selector: 'LoginScreen',
   standalone: true,
@@ -20,7 +19,6 @@ export class LoginScreen implements OnDestroy {
   }
 
   constructor(
-    private snackBar: MatSnackBar,
     private accountService: AccountsService,
     private router: Router,
   ){}
@@ -54,7 +52,13 @@ export class LoginScreen implements OnDestroy {
 
   loginWithUserPassword() {
     if(!this.loginGroup.valid){
-      this.snackBar.open("Please enter valid email and password", 'Close', {verticalPosition: 'top'});
+      toast(`User login failed`, {
+        description: `Please enter valid email and password`,
+        action: {
+          label: 'Close',
+          onClick: () => {},
+        }
+      })
       return;
     }
     this.accountService.authenticate({
@@ -72,7 +76,7 @@ export class LoginScreen implements OnDestroy {
           let status = (err.error as ErrorResponse).statusCode;
           let message = (err.error as ErrorResponse).message ?? 'Something went wrong';
           toast(`User login failed`, {
-            description: `${message} - status ${status}`,
+            description: `${message} - status ${status ?? 500}`,
             action: {
               label: 'Close',
               onClick: () => {},

@@ -4,7 +4,7 @@ public class AccountConstants {
 
     private AccountConstants() {}
 
-    public static final String INFO_API_PREFIX = "/api/v1/account";
+    public static final String INFO_API_PREFIX = "/api/v1/account/info";
     public static final String AUTH_API_PREFIX = "/api/v1/account/auth";
     public static final String USER_API_PREFIX = "/api/v1/account/user";
 

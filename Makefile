@@ -26,3 +26,22 @@ build:
 
 up:
 	@docker-compose up
+
+run-config: 
+	@cd services/config
+	@mvn spring-boot:run
+
+run-discovery: 
+	@cd services/discovery
+	@mvn spring-boot:run
+
+run-accounts: 
+	@cd services/accounts
+	@mvn spring-boot:run
+
+run-project: 
+	@cd services/project
+	@mvn spring-boot:run
+
+
+

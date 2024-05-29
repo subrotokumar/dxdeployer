@@ -11,7 +11,7 @@ import {
   HlmMenuSeparatorComponent,
   HlmMenuShortcutComponent,
   HlmSubMenuComponent,
-} from '@spartan-ng/ui-menu-helm';
+} from '../../../shared/components/menu/src';
 @Component({
   selector: 'profile-icon',
   standalone: true,

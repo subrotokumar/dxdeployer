@@ -14,7 +14,7 @@ app.use((req, res) => {
     const hostname = req.hostname;
     const subdomain = hostname.split('.')[0];
 
-    // Custom Domain - DB Query
+    //TODO: Custom Domain - DB Query
 
     const resolvesTo = `${BASE_PATH}/${subdomain}`
 

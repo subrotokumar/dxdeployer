@@ -4,22 +4,23 @@ import { RouterModule } from '@angular/router';
 import { PASSWORD_REGEX } from '../../../core/constants/constants';
 import { AccountsService } from '../../../services/accounts.service';
 import { Assets } from '../../../core/constants/assets';
-import {MatSnackBar} from "@angular/material/snack-bar"
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ErrorResponse } from '../../../core/types/types';
+import { toast } from 'ngx-sonner';
+import { HlmToasterComponent } from '../../../shared/components/sonner/src';
+import { DashboardFooterComponent } from '../../dashboard/footer/footer.component';
 
 @Component({
   selector: 'RegisterScreen',
   standalone: true,
-  imports: [RouterModule, ReactiveFormsModule],
+  imports: [RouterModule, ReactiveFormsModule, HlmToasterComponent, DashboardFooterComponent ],
   providers: [AccountsService],
   templateUrl: './register.component.html',
 })
 export class RegisterScreen implements OnInit  {
 
   constructor(
-    private accountServcie: AccountsService,
-    private snackBar: MatSnackBar
+    private accountServcie: AccountsService
   ){}
 
   ratingEarth = Assets.Gif.rotatingEarth;
@@ -74,7 +75,13 @@ export class RegisterScreen implements OnInit  {
 
   registerUser() {
     if(!this.registerForm.valid){
-      this.snackBar.open("Please fill the information correctly", 'Close', {verticalPosition: 'top'});
+      toast(`Form Validation Error`, {
+        description: `Please fill the information correctly`,
+        action: {
+          label: 'Close',
+          onClick: () => {},
+        }
+      })
       return;
     }
     const response = this.accountServcie.register({
@@ -85,13 +92,26 @@ export class RegisterScreen implements OnInit  {
     response.subscribe({
       next: (res: HttpResponse<void>) => {
         if(res.status<400){
-          this.snackBar.open("Registration Successfull!", "Close", {verticalPosition: 'top'});
+          toast(`Registration Successfull!`, {
+            description: `Welcome to DxDeployer`,
+            action: {
+              label: 'Close',
+              onClick: () => {},
+            }
+          })
           return;
         }
       },
       error: (error: HttpErrorResponse) => {
         let message = (error.error as ErrorResponse).message
-        this.snackBar.open(message, 'Close', {verticalPosition: 'top'});
+        toast(`Registration Failed!`, {
+          description: message,
+          action: {
+            label: 'Close',
+            onClick: () => {},
+          }
+        })
+        return;
       }
     })
   }

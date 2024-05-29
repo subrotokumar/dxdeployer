@@ -1,6 +1,6 @@
 import { Directive, booleanAttribute, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { type ButtonVariants, buttonVariants } from '../../../ui-button-helm/src';
+import { type ButtonVariants, buttonVariants } from '../../../button/src';
 import { hlm } from '@spartan-ng/ui-core';
 import { type VariantProps, cva } from 'class-variance-authority';
 

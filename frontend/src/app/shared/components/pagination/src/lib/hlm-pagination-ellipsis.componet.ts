@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { lucideMoreHorizontal } from '@ng-icons/lucide';
 import { hlm } from '@spartan-ng/ui-core';
-import { HlmIconComponent, provideIcons } from '../../../ui-icon-helm/src';
+import { HlmIconComponent, provideIcons } from '../../../icon/src';
 import { HlmPaginationLinkDirective } from './hlm-pagination-link.directive';
 
 @Component({

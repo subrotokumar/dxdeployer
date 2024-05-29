@@ -1,28 +1,28 @@
 import { Component, computed, input } from '@angular/core';
-import { lucideChevronRight } from '@ng-icons/lucide';
+import { lucideChevronLeft } from '@ng-icons/lucide';
 import { hlm } from '@spartan-ng/ui-core';
-import { HlmIconComponent, provideIcons } from '../../../ui-icon-helm/src';
+import { HlmIconComponent, provideIcons } from '../../../icon/src';
 import { HlmPaginationLinkDirective } from './hlm-pagination-link.directive';
 
 @Component({
-	selector: 'hlm-pagination-next',
+	selector: 'hlm-pagination-previous',
 	standalone: true,
 	imports: [HlmPaginationLinkDirective, HlmIconComponent],
-	providers: [provideIcons({ lucideChevronRight })],
+	providers: [provideIcons({ lucideChevronLeft })],
 	template: `
 		<a
 			[class]="_computedClass()"
 			hlmPaginationLink
 			[link]="link()"
 			size="default"
-			[attr.aria-label]="'Go to next page'"
+			[attr.aria-label]="'Go to previous page'"
 		>
-			<span>Next</span>
-			<hlm-icon size="sm" name="lucideChevronRight" />
+			<hlm-icon size="sm" name="lucideChevronLeft" />
+			<span>Previous</span>
 		</a>
 	`,
 })
-export class HlmPaginationNextComponent {
+export class HlmPaginationPreviousComponent {
 	public readonly class = input('');
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public readonly link = input<string | any[] | null | undefined>();

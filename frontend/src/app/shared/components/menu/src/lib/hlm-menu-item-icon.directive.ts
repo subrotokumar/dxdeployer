@@ -1,6 +1,6 @@
 import { Directive, computed, inject, input } from '@angular/core';
 import { hlm } from '@spartan-ng/ui-core';
-import { HlmIconComponent } from '../../../ui-icon-helm/src';
+import { HlmIconComponent } from '../../../icon/src';
 import type { ClassValue } from 'clsx';
 
 @Directive({

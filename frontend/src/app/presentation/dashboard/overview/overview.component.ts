@@ -7,10 +7,10 @@ import {
   HlmCardFooterDirective,
   HlmCardHeaderDirective,
   HlmCardTitleDirective,
-} from '../../../shared/components/ui-card-helm/src';
-import { HlmBadgeDirective } from '../../../shared/components/ui-badge-helm/src';
+} from '../../../shared/components/card/src';
+import { HlmBadgeDirective } from '../../../shared/components/badge/src';
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
-import { HlmSelectImports } from '../../../shared/components/ui-select-helm/src';
+import { HlmSelectImports } from '../../../shared/components/select/src';
 import { BrnMenuTriggerDirective } from '@spartan-ng/ui-menu-brain';
 import {
   HlmMenuComponent,
@@ -22,12 +22,12 @@ import {
   HlmMenuSeparatorComponent,
   HlmMenuShortcutComponent,
   HlmSubMenuComponent,
-} from '../../../shared/components/ui-menu-helm/src';
-import { HlmIconComponent } from '../../../shared/components/ui-icon-helm/src';
+} from '../../../shared/components/menu/src';
+import { HlmIconComponent } from '../../../shared/components/icon/src';
 import { Project } from '../../../core/types/project.types';
 import { HttpErrorResponse } from '@angular/common/http';
 import { toast } from 'ngx-sonner';
-import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
+import { HlmToasterComponent } from '../../../shared/components/sonner/src';
 import { ErrorResponse } from '../../../core/types/types';
 import { DashboardFooterComponent } from '../footer/footer.component';
 import { lucideLayoutGrid } from '@ng-icons/lucide';
@@ -64,7 +64,7 @@ import { lucideLayoutGrid } from '@ng-icons/lucide';
 export class OverviewComponent implements OnInit {
   projects = signal<Project[]>([]);
 
-  gridView = signal(false)
+  gridView = signal(true)
 
   viewStyle(num:number){
   }
