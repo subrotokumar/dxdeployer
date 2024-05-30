@@ -7,7 +7,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +19,7 @@ import dev.subrotokumar.accounts.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -42,17 +42,16 @@ public class UserController {
     /**
      * Retrieves user data based on the provided user ID.
      *
-     * @param userId the ID of the user whose data is to be retrieved
-     * @param userRole the role of the user whose data is to be retrieved
+     * @param request request interface to provide request information for HTTP servlets
      * @return ResponseEntity containing the user's account data
      */
     @Operation(summary = "Get User Data", description = "Retrieve user data for a given user ID")
     @ApiResponse(responseCode = "200", description = "Data retrieval successful")
     @GetMapping()
     public ResponseEntity<ResponseDto<AccountDto>> getUserData(
-            @RequestHeader(Constants.USER_ID) int userId,
-            @RequestHeader(name = Constants.USER_ROLE, defaultValue = "USER") String userRole
+        HttpServletRequest request
     ) {
+        int userId = Integer.parseInt(request.getAttribute(Constants.USER_ID).toString());
         return ResponseEntity.ok(
                 ResponseDto.<AccountDto>builder()
                         .status(HttpStatus.OK)
@@ -62,15 +61,16 @@ public class UserController {
     }
 
     /**
-     * Deletes a user account based on the provided user ID.
+     * Delete a user account based on the provided user ID.
      *
-     * @param userId the ID of the user whose account is to be deleted
+     * @param request request interface to provide request information for HTTP servlets
      */
     @Operation(summary = "Delete User", description = "Delete a user account for a given user ID")
     @ApiResponse(responseCode = "204", description = "User deleted successfully")
     @DeleteMapping()
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void DeleteUser(@RequestHeader(Constants.USER_ID) int userId) {
+    public void DeleteUser(HttpServletRequest request) {
+        int userId = Integer.parseInt(request.getAttribute(Constants.USER_ID).toString());
         accountService.deleteAccount(userId);
     }
 }

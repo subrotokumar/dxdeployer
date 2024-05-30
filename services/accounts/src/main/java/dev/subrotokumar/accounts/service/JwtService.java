@@ -64,4 +64,6 @@ public interface JwtService {
      * @return true if the token is valid, false otherwise
      */
     boolean isTokenValid(String token, UserDetails userDetails);
+
+    public Claims extractAllClaims(String token);
 }

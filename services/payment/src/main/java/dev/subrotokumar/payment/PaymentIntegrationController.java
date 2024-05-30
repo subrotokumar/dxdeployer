@@ -1,21 +1,12 @@
 package dev.subrotokumar.payment;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.razorpay.*;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import org.json.JSONObject;
-
-import com.razorpay.*;
-
-import jakarta.transaction.Transaction;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
 
 @RestController
 public class PaymentIntegrationController {

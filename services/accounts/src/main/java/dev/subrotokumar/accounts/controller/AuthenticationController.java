@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.subrotokumar.accounts.constants.AccountConstants;
 import dev.subrotokumar.accounts.dto.AuthenticationRequestDto;
 import dev.subrotokumar.accounts.dto.AuthenticationResponseDto;
+import dev.subrotokumar.accounts.dto.MagicLinkRequestDto;
 import dev.subrotokumar.accounts.dto.RefreshTokenRequestDto;
 import dev.subrotokumar.accounts.dto.RegisterAccountRequestDto;
 import dev.subrotokumar.accounts.service.AuthenticationService;
@@ -25,6 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * Controller for handling authentication-related operations such as user
@@ -81,6 +84,21 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponseDto> refreshToken(@Valid @RequestBody RefreshTokenRequestDto refreshTokenDto) {
         log.info(refreshTokenDto.getRefreshToken());
         return ResponseEntity.ok(authService.refreshToken(refreshTokenDto));
+    }
+
+    @PostMapping("/magiclink")
+    @ResponseStatus(code=HttpStatus.ACCEPTED)
+    public void magiclink(@RequestBody @Valid MagicLinkRequestDto body) {
+        authService.magiclink(body);
+    }
+
+    @PostMapping("/magiclink/verify/{magiclink}")
+    @ResponseStatus(code=HttpStatus.OK)
+    public ResponseEntity<AuthenticationResponseDto> verifyMagicLink(
+            @Valid @PathVariable("magiclink") String magiclink,
+            HttpServletResponse response
+    ) {
+        return ResponseEntity.ok(authService.verifyMagicLink(magiclink));
     }
 
 }

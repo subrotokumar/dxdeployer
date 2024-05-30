@@ -1,6 +1,5 @@
 package dev.subrotokumar.accounts.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,5 +41,5 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
      * @param email the email to search for
      * @return a list of accounts matching the username or email
      */
-    List<Account> findByUsernameOrEmail(String username, String email);
+    Optional<Account> findByUsernameOrEmail(String username, String email);
 }

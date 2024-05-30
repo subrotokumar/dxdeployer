@@ -2,6 +2,7 @@ package dev.subrotokumar.accounts.service;
 
 import dev.subrotokumar.accounts.dto.AuthenticationRequestDto;
 import dev.subrotokumar.accounts.dto.AuthenticationResponseDto;
+import dev.subrotokumar.accounts.dto.MagicLinkRequestDto;
 import dev.subrotokumar.accounts.dto.RefreshTokenRequestDto;
 import dev.subrotokumar.accounts.dto.RegisterAccountRequestDto;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +15,7 @@ public interface AuthenticationService {
     /**
      * Registers a new user account with the provided account details.
      *
-     * @param accountDto DTO containing registration details
+     * @param accountDto {{@code RegisterAccountRequestDto}} containing registration details
      */
     void registerAccount(RegisterAccountRequestDto accountDto);
 
@@ -34,4 +35,13 @@ public interface AuthenticationService {
      * @return AuthenticationResponseDto with authentication details
      */
     AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequestDto, HttpServletResponse response);
+
+    /**
+     * Authenticates a user and send magiclink to email
+     *
+     * @param magiclinkRequest DTO containing authentication credentials
+     */
+    void magiclink(MagicLinkRequestDto magiclinkRequest);
+
+    AuthenticationResponseDto verifyMagicLink(String magicLink);
 }

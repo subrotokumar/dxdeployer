@@ -1,6 +1,11 @@
 package dev.subrotokumar.accounts.service.impl;
 
+import static java.lang.String.format;
+import java.security.Key;
 import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.ResponseCookie;
@@ -13,6 +18,7 @@ import com.google.common.net.HttpHeaders;
 
 import dev.subrotokumar.accounts.dto.AuthenticationRequestDto;
 import dev.subrotokumar.accounts.dto.AuthenticationResponseDto;
+import dev.subrotokumar.accounts.dto.MagicLinkRequestDto;
 import dev.subrotokumar.accounts.dto.RefreshTokenRequestDto;
 import dev.subrotokumar.accounts.dto.RegisterAccountRequestDto;
 import dev.subrotokumar.accounts.dto.TokenDto;
@@ -21,10 +27,16 @@ import dev.subrotokumar.accounts.entity.RefreshToken;
 import dev.subrotokumar.accounts.entity.TokenType;
 import dev.subrotokumar.accounts.exception.AccountAlreadyExistException;
 import dev.subrotokumar.accounts.exception.AccountNotFoundException;
+import dev.subrotokumar.accounts.kafka.LoginMagicLinkProducer;
+import dev.subrotokumar.accounts.kafka.LoginMagiclink;
 import dev.subrotokumar.accounts.mapper.AccountMapper;
 import dev.subrotokumar.accounts.repository.AccountRepository;
 import dev.subrotokumar.accounts.repository.RefreshTokenRepository;
 import dev.subrotokumar.accounts.service.AuthenticationService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,12 +48,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     final private AccountRepository accountRepository;
     final private RefreshTokenRepository refreshTokenRepository;
-
     final private AccessJwtServiceImpl accessJwtService;
-
     final private RefreshJwtServiceImpl refreshJwtService;
-
     final private AuthenticationManager authenticationManager;
+    final private LoginMagicLinkProducer loginMagicLinkProducer;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
@@ -51,7 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         account.setPassword(encoder.encode(account.getPassword()));
         var accounts = accountRepository.findByUsernameOrEmail(account.getUsername(), account.getPassword());
         if (!accounts.isEmpty()) {
-            log.error("Account already exist", AccountAlreadyExistException.class);
+            log.error(format("Account already exist => throws AccountAlreadyExistException"));
             throw new AccountAlreadyExistException("Account already exists");
         }
         accountRepository.save(account);
@@ -159,4 +169,46 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return authResponse;
     }
 
+    @Override
+    public void magiclink(MagicLinkRequestDto magiclinkRequest) {
+        var account = accountRepository
+                .findByUsernameOrEmail(magiclinkRequest.getUsername(), magiclinkRequest.getEmail())
+                .orElseThrow(()-> new AccountNotFoundException("Account not found"));
+
+        if(!account.isEmailVerified()){
+                // return;
+        }
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", account.getRole());
+        extraClaims.put("type", "MAGIC_LINK");
+        extraClaims.put("iss", "subrotokumar.dev");
+        extraClaims.put("userId", account.getId());
+        var magiclink = Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(account.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + (1000*60*5)))
+                .signWith(getMagiclinkSecretKey(), SignatureAlgorithm.HS256)
+                .compact();
+        loginMagicLinkProducer.sendLoginMagiclink(
+                LoginMagiclink.builder()
+                        .userId(account.getId())
+                        .email(account.getEmail())
+                        .magiclink(magiclink)
+                        .username(account.getUsername())
+                        .callbackUrl(null)
+                        .build()
+        );
+    }
+
+    @Override
+    public AuthenticationResponseDto verifyMagicLink(String magicLink) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private Key getMagiclinkSecretKey() {
+        byte[] keyBytes = Decoders.BASE64.decode("magiclinkshajvdcjqw2eyuqy82dgiqgwayvxy8b29exyben98273e3gen3zyugny87e3");
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 }

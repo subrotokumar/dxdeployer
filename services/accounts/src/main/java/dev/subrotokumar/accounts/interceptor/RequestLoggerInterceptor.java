@@ -19,7 +19,7 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         startTime = System.currentTimeMillis();
-        logger.info("Request URL::" + request.getRequestURL().toString()
+        logger.info("Request URL::" + request.getRequestURI().substring(request.getContextPath().length())
                 + ":: Start Time=" + System.currentTimeMillis());
         return true;
     }
@@ -27,7 +27,7 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) {
-        logger.info("Request URL::" + request.getRequestURL().toString()
+        logger.info("Request URL::" + request.getRequestURI().substring(request.getContextPath().length())
                 + " Sent to Handler :: Current Time=" + System.currentTimeMillis());
     }
 

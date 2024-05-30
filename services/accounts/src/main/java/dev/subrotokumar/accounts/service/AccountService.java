@@ -22,4 +22,5 @@ public interface AccountService {
      * @param userId the ID of the user whose account is to be deleted
      */
     public void deleteAccount(int userId);
+    
 }
