@@ -21,6 +21,9 @@ public class AccountMapper {
                 .email(entity.getEmail())
                 .username(entity.getUsername())
                 .role(entity.getRole())
+                .emailVerified(entity.isEmailVerified())
+                .createdAt(entity.getCreatedAt())
+                .lastModifiedAt(entity.getLastModifiedAt())
                 .build();
     }
 }

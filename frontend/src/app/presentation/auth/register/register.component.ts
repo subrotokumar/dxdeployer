@@ -7,7 +7,7 @@ import { Assets } from '../../../core/constants/assets';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ErrorResponse } from '../../../core/types/types';
 import { toast } from 'ngx-sonner';
-import { HlmToasterComponent } from '../../../shared/components/sonner/src';
+import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
 import { DashboardFooterComponent } from '../../dashboard/footer/footer.component';
 
 @Component({

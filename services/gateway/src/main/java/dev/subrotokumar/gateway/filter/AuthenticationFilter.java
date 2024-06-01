@@ -15,8 +15,10 @@ import org.springframework.util.MultiValueMap;
 
 import com.google.common.net.HttpHeaders;
 
+import dev.subrotokumar.gateway.exception.ExpiredTokenException;
 import dev.subrotokumar.gateway.exception.InvalidAuthorizationToken;
 import dev.subrotokumar.gateway.exception.MissingAuthenticationHeader;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -66,15 +68,27 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     authHeader = authHeader.substring(7);
                 }
                 try {
-                    Jwts
+                    Claims claim = Jwts
                             .parserBuilder()
                             .setSigningKey(getSignInKey())
                             .build()
                             .parseClaimsJws(authHeader)
                             .getBody();
+                    String username = claim.getSubject();
+                    String id = claim.get("userId").toString();
+                    String role = claim.get("role").toString();
+                    var request = exchange
+                            .getRequest()
+                            .mutate()
+                            .header("X-USER-ID", id)
+                            .header("X-USER-NAME", username)
+                            .header(username, "X-USER-ROLE", role)
+                            .build();
 
-                    // exchange = exchange.mutate().request(request).build();
-                } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException
+                    exchange = exchange.mutate().request(request).build();
+                }  catch(ExpiredJwtException e){
+                    throw new ExpiredTokenException(e.getMessage());
+                } catch (MalformedJwtException | UnsupportedJwtException | SignatureException
                         | IllegalArgumentException e) {
                     throw new InvalidAuthorizationToken();
                 }

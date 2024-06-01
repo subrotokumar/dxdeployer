@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { HlmToasterComponent } from './lib/hlm-toaster.component';
+import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
+
 
 export * from './lib/hlm-toaster.component';
 

@@ -41,15 +41,18 @@ export class AccountsService {
   };
 
   userDetail = () => {
-    const accessToken = localStorage.getItem('access_token');
     return this.apiService.get<HttpResponse<ApiResponse<UserDetailResponse>>>(
       `${environment.accountService}/user`,
-      {
-        observe: 'events',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
+      { observe: 'events' },
     );
   };
+
+  validateMagiclink = (magiclink: string) => {
+    return this.apiService.post<HttpResponse<LoginResponse>>(
+      `${environment.accountService}/auth/magiclink/verify/${magiclink}`,
+      {},
+      { observe: 'events' },
+    );
+  }
+  
 }

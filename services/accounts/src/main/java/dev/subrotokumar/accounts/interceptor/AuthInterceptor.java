@@ -29,7 +29,8 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler ) {
         String path = request.getRequestURI().substring(request.getContextPath().length());
         System.out.println("Hello Boy "+secureEndpointConfig.isSecure(path));
-        if(secureEndpointConfig.isSecure(path)) return true;
+        // if(secureEndpointConfig.isSecure(path)) return true;
+        if(!path.contains("user")) return true;
         var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             authHeader = authHeader.substring(7);

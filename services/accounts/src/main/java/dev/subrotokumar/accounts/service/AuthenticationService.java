@@ -15,7 +15,7 @@ public interface AuthenticationService {
     /**
      * Registers a new user account with the provided account details.
      *
-     * @param accountDto {{@code RegisterAccountRequestDto}} containing registration details
+     * @param accountDto {@code RegisterAccountRequestDto} containing registration details
      */
     void registerAccount(RegisterAccountRequestDto accountDto);
 
@@ -43,5 +43,5 @@ public interface AuthenticationService {
      */
     void magiclink(MagicLinkRequestDto magiclinkRequest);
 
-    AuthenticationResponseDto verifyMagicLink(String magicLink);
+    AuthenticationResponseDto verifyMagicLink(String magicLink, HttpServletResponse response);
 }

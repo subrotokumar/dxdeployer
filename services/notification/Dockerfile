@@ -12,5 +12,5 @@
 # CMD ["java", "-jar", "app.jar"]
 
 FROM docker.io/eclipse-temurin:21-jdk-alpine
-COPY target/accounts.jar app.jar
+COPY target/notification.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]

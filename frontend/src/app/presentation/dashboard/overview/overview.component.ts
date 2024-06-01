@@ -25,12 +25,10 @@ import {
 } from '../../../shared/components/menu/src';
 import { HlmIconComponent } from '../../../shared/components/icon/src';
 import { Project } from '../../../core/types/project.types';
-import { HttpErrorResponse } from '@angular/common/http';
 import { toast } from 'ngx-sonner';
-import { HlmToasterComponent } from '../../../shared/components/sonner/src';
+import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
 import { ErrorResponse } from '../../../core/types/types';
 import { DashboardFooterComponent } from '../footer/footer.component';
-import { lucideLayoutGrid } from '@ng-icons/lucide';
 
 @Component({
   selector: 'overview',

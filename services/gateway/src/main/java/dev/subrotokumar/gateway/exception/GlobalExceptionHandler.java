@@ -15,7 +15,7 @@ import dev.subrotokumar.gateway.model.ErrorDto;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorDto> handleGlobalException(RuntimeException exception) {
+    public ResponseEntity<ErrorDto> handleGlobalExceptionHandler(RuntimeException exception) {
         ErrorDto errorResponseDTO = ErrorDto
                 .builder()
                 .code(HttpStatus.BAD_REQUEST.value())
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidAuthorizationToken.class)
-    public ResponseEntity<ErrorDto> handleInvalidAuthorizationToken(InvalidAuthorizationToken exception) {
+    public ResponseEntity<ErrorDto> handleInvalidAuthorizationTokenHandler(InvalidAuthorizationToken exception) {
         var errorResponseDto = ErrorDto
                 .builder()
                 .code(HttpStatus.BAD_REQUEST.value())
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MissingAuthenticationHeader.class)
-    public ResponseEntity<ErrorDto> handleMissingAuthenticationHeader(MissingAuthenticationHeader exception,
+    public ResponseEntity<ErrorDto> handleMissingAuthenticationHandler(MissingAuthenticationHeader exception,
             WebRequest webRequest) {
         var errorResponseDto = ErrorDto
                 .builder()
@@ -49,5 +49,18 @@ public class GlobalExceptionHandler {
                 .time(LocalDateTime.now())
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDto);
+    }
+
+    @ExceptionHandler(ExpiredTokenException.class)
+    public ResponseEntity<ErrorDto> handleExpiredTokenExceptionHandler(ExpiredTokenException exception,
+            WebRequest webRequest) {
+        var errorResponseDto = ErrorDto
+                .builder()
+                .code(HttpStatus.FORBIDDEN.value())
+                .status(HttpStatus.FORBIDDEN.name())
+                .message(exception.getMessage())
+                .time(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponseDto);
     }
 }

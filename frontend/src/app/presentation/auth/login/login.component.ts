@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AccountsService } from '../../../services/accounts.service';
 import { ErrorResponse } from '../../../core/types/types';
 import { toast } from 'ngx-sonner';
-import { HlmToasterComponent } from '../../../shared/components/sonner/src';
+import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
 @Component({
   selector: 'LoginScreen',
   standalone: true,

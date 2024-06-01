@@ -53,10 +53,10 @@ public class UserController {
     ) {
         int userId = Integer.parseInt(request.getAttribute(Constants.USER_ID).toString());
         return ResponseEntity.ok(
-                ResponseDto.<AccountDto>builder()
-                        .status(HttpStatus.OK)
-                        .data(accountService.getAccountInfo(userId))
-                        .build()
+            ResponseDto.<AccountDto>builder()
+                    .status(HttpStatus.OK)
+                    .data(accountService.getAccountInfo(userId))
+                    .build()
         );
     }
 

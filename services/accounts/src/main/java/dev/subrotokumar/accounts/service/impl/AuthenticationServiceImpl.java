@@ -33,6 +33,7 @@ import dev.subrotokumar.accounts.mapper.AccountMapper;
 import dev.subrotokumar.accounts.repository.AccountRepository;
 import dev.subrotokumar.accounts.repository.RefreshTokenRepository;
 import dev.subrotokumar.accounts.service.AuthenticationService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -203,8 +204,70 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResponseDto verifyMagicLink(String magicLink) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public AuthenticationResponseDto verifyMagicLink(String magicLink, HttpServletResponse response) {
+        Claims claim = Jwts
+                            .parserBuilder()
+                            .setSigningKey(getMagiclinkSecretKey())
+                            .build()
+                            .parseClaimsJws(magicLink)
+                            .getBody();
+        String id = claim.get("userId").toString();
+        Account account = accountRepository
+                .findById(Integer.valueOf(id))
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+
+        var accessToken = accessJwtService.generateToken(account, account.getId());
+        var refreshToken = refreshJwtService.generateToken(account, account.getId());
+
+        refreshTokenRepository.save(
+                RefreshToken
+                        .builder()
+                        .token(refreshToken)
+                        .type(TokenType.REFRESH_TOKEN)
+                        .tokenId(UUID.nameUUIDFromBytes(refreshToken.getBytes()))
+                        .expiry(refreshJwtService.extractExpiration(refreshToken))
+                        .build());
+
+        var authResponse = AuthenticationResponseDto
+                .builder()
+                .accessToken(
+                        TokenDto
+                                .builder()
+                                .token(accessToken)
+                                .expiry(accessJwtService.extractExpiration(accessToken))
+                                .build())
+                .refreshToken(
+                        TokenDto
+                                .builder()
+                                .token(refreshToken)
+                                .expiry(refreshJwtService
+                                        .extractExpiration(refreshToken))
+                                .build())
+                .build();
+
+        String encodedAccessToken = Base64.getUrlEncoder().encodeToString(accessToken.getBytes());
+        String encodedRefreshToken = Base64.getUrlEncoder().encodeToString(refreshToken.getBytes());
+
+        ResponseCookie cookie1 = ResponseCookie
+                .from("access_token", encodedAccessToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
+
+        ResponseCookie cookie2 = ResponseCookie
+                .from("refresh_token", encodedRefreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie1.toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie2.toString());
+
+        return authResponse;
     }
 
     private Key getMagiclinkSecretKey() {
