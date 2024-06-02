@@ -4,6 +4,7 @@ import { AccountsService } from '../../../services/accounts.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { toast } from 'ngx-sonner';
 import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
+import { timeout } from 'rxjs';
 @Component({
   selector: 'magiclink',
   standalone: true,
@@ -23,15 +24,16 @@ export class MagiclinkComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    setTimeout(this.validateMagiclink, 2000)
+  }
+
+  validateMagiclink() {
     this.route.queryParams
       .subscribe(params => {
         this.magiclink.set(params['magiclink'])
       }
     );
-    this.validateMagiclink()
-  }
-
-  validateMagiclink() {
+    console.log("Magiclink: "+this.magiclink())
     this.accountService.validateMagiclink(this.magiclink()).subscribe({
       next: (response) => {
         if(response.status>=400) return;

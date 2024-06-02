@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { BrnMenuTriggerDirective } from '@spartan-ng/ui-menu-brain';
 import {
   HlmMenuComponent,
@@ -25,7 +25,8 @@ import {
     HlmMenuSeparatorComponent,
     HlmMenuShortcutComponent,
     HlmSubMenuComponent,
-    BrnMenuTriggerDirective
+    BrnMenuTriggerDirective,
+    RouterModule
   ],
   templateUrl: './profile.component.html',
 })

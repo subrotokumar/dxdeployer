@@ -47,6 +47,14 @@ export class AccountsService {
     );
   };
 
+  loginWithMagiclink = (username: string) => {
+    return this.apiService.post<HttpResponse<LoginResponse>>(
+      `${environment.accountService}/auth/magiclink`,
+      { username: username },
+      { observe: 'events' },
+    );
+  }
+
   validateMagiclink = (magiclink: string) => {
     return this.apiService.post<HttpResponse<LoginResponse>>(
       `${environment.accountService}/auth/magiclink/verify/${magiclink}`,

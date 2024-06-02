@@ -5,6 +5,13 @@ import { AccountsService } from '../../../services/accounts.service';
 import { ErrorResponse } from '../../../core/types/types';
 import { toast } from 'ngx-sonner';
 import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm';
+
+enum Page {
+  MAIN,
+  EMAIL,
+  MAGICLINK
+}
+
 @Component({
   selector: 'LoginScreen',
   standalone: true,
@@ -26,15 +33,21 @@ export class LoginScreen implements OnDestroy {
   ngOnDestroy(): void {
   }
 
-  mainAuthScreen = signal(true);
+  mainAuthScreen = signal(Page.MAIN);
 
   emailAuth() {
-    this.mainAuthScreen.set(false);
+    this.mainAuthScreen.set(Page.EMAIL);
   }
 
   mainAuth() {
-    this.mainAuthScreen.set(true);
+    this.mainAuthScreen.set(Page.MAIN);
   }
+
+  magiclinkAuth() {
+    this.mainAuthScreen.set(Page.MAGICLINK);
+  }
+  
+  
 
   usernameController = new FormControl("",[
     Validators.required
@@ -48,6 +61,10 @@ export class LoginScreen implements OnDestroy {
   loginGroup = new FormGroup({
     username: this.usernameController,
     password: this.passwordController,
+  })
+
+  magiclinkForm = new FormGroup({
+    username: this.usernameController,
   })
 
   loginWithUserPassword() {
@@ -89,4 +106,42 @@ export class LoginScreen implements OnDestroy {
     })
   }
 
+  loginWithMagiclink() {
+    if(!this.magiclinkForm.valid){
+      toast(`User login failed`, {
+        description: `Please enter valid username or email`,
+        action: {
+          label: 'Close',
+          onClick: () => {},
+        }
+      })
+      return;
+    }
+    this.accountService
+    .loginWithMagiclink(this.magiclinkForm.value.username ?? '').subscribe({
+      next: (response) => {
+          if(response.status>=400) return;
+      },
+      error: (err) => {
+          let status = (err.error as ErrorResponse).statusCode;
+          let message = (err.error as ErrorResponse).message ?? 'Something went wrong';
+          toast(`User login failed`, {
+            description: `${message} - status ${status ?? 500}`,
+            action: {
+              label: 'Close',
+              onClick: () => {},
+            }
+          })
+      },
+      complete: () => {
+        toast(`Magiclink send to email`, {
+          description: `Please check you email inbox`,
+          action: {
+            label: 'Close',
+            onClick: () => {},
+          }
+        })
+      }
+    })
+  }
 }

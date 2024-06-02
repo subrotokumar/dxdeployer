@@ -172,12 +172,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void magiclink(MagicLinkRequestDto magiclinkRequest) {
-        var account = accountRepository
-                .findByUsernameOrEmail(magiclinkRequest.getUsername(), magiclinkRequest.getEmail())
-                .orElseThrow(()-> new AccountNotFoundException("Account not found"));
-
-        if(!account.isEmailVerified()){
-                // return;
+        var user = magiclinkRequest.getUsername();
+        System.out.println("user "+user);
+        Account account = accountRepository
+                        .findByUsernameOrEmail(user, user)
+                        .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+        if (!account.isEmailVerified()) {
+            // return;
         }
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("role", account.getRole());
@@ -189,7 +190,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setClaims(extraClaims)
                 .setSubject(account.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + (1000*60*5)))
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 5)))
                 .signWith(getMagiclinkSecretKey(), SignatureAlgorithm.HS256)
                 .compact();
         loginMagicLinkProducer.sendLoginMagiclink(
@@ -206,11 +207,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponseDto verifyMagicLink(String magicLink, HttpServletResponse response) {
         Claims claim = Jwts
-                            .parserBuilder()
-                            .setSigningKey(getMagiclinkSecretKey())
-                            .build()
-                            .parseClaimsJws(magicLink)
-                            .getBody();
+                .parserBuilder()
+                .setSigningKey(getMagiclinkSecretKey())
+                .build()
+                .parseClaimsJws(magicLink)
+                .getBody();
         String id = claim.get("userId").toString();
         Account account = accountRepository
                 .findById(Integer.valueOf(id))
