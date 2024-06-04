@@ -1,5 +1,9 @@
 package dev.subrotokumar.accounts.dto;
+import lombok.Builder;
+import lombok.Data;
 
-public record VerifyMagiclinkDto (
-    String magiclink
-) {}
+@Data
+@Builder
+public class VerifyMagiclinkDto {
+    private String token;
+}

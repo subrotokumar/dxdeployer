@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,6 @@ import dev.subrotokumar.accounts.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -49,9 +49,8 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "Data retrieval successful")
     @GetMapping()
     public ResponseEntity<ResponseDto<AccountDto>> getUserData(
-        HttpServletRequest request
+        @RequestHeader(value=Constants.USER_ID) int userId
     ) {
-        int userId = Integer.parseInt(request.getAttribute(Constants.USER_ID).toString());
         return ResponseEntity.ok(
             ResponseDto.<AccountDto>builder()
                     .status(HttpStatus.OK)
@@ -69,8 +68,7 @@ public class UserController {
     @ApiResponse(responseCode = "204", description = "User deleted successfully")
     @DeleteMapping()
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void DeleteUser(HttpServletRequest request) {
-        int userId = Integer.parseInt(request.getAttribute(Constants.USER_ID).toString());
+    public void DeleteUser(@RequestHeader(value=Constants.USER_ID) int userId) {
         accountService.deleteAccount(userId);
     }
 }

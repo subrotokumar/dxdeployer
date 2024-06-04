@@ -193,11 +193,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 5)))
                 .signWith(getMagiclinkSecretKey(), SignatureAlgorithm.HS256)
                 .compact();
+        System.out.println(magiclink);
+        System.out.println(Base64.getEncoder().encodeToString(magiclink.getBytes()));
         loginMagicLinkProducer.sendLoginMagiclink(
                 LoginMagiclink.builder()
                         .userId(account.getId())
                         .email(account.getEmail())
-                        .magiclink(magiclink)
+                        .magiclink(Base64.getEncoder().encodeToString(magiclink.getBytes()))
                         .username(account.getUsername())
                         .callbackUrl(null)
                         .build()
@@ -206,6 +208,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponseDto verifyMagicLink(String magicLink, HttpServletResponse response) {
+        magicLink = new String(Base64.getDecoder().decode(magicLink));
+        System.out.println("Magiclink "+magicLink);
         Claims claim = Jwts
                 .parserBuilder()
                 .setSigningKey(getMagiclinkSecretKey())
@@ -213,6 +217,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .parseClaimsJws(magicLink)
                 .getBody();
         String id = claim.get("userId").toString();
+        System.out.println("Magiclink "+magicLink);
         Account account = accountRepository
                 .findById(Integer.valueOf(id))
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
@@ -220,14 +225,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var accessToken = accessJwtService.generateToken(account, account.getId());
         var refreshToken = refreshJwtService.generateToken(account, account.getId());
 
-        refreshTokenRepository.save(
-                RefreshToken
-                        .builder()
-                        .token(refreshToken)
-                        .type(TokenType.REFRESH_TOKEN)
-                        .tokenId(UUID.nameUUIDFromBytes(refreshToken.getBytes()))
-                        .expiry(refreshJwtService.extractExpiration(refreshToken))
-                        .build());
+        System.out.println("access token "+accessToken);
+        System.out.println("refresh token "+refreshToken);
+
+
+        // refreshTokenRepository.save(
+        //         RefreshToken
+        //                 .builder()
+        //                 .token(refreshToken)
+        //                 .type(TokenType.REFRESH_TOKEN)
+        //                 .tokenId(UUID.nameUUIDFromBytes(refreshToken.getBytes()))
+        //                 .expiry(refreshJwtService.extractExpiration(refreshToken))
+        //                 .build());
 
         var authResponse = AuthenticationResponseDto
                 .builder()

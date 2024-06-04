@@ -15,7 +15,6 @@ import org.springframework.util.MultiValueMap;
 
 import com.google.common.net.HttpHeaders;
 
-import dev.subrotokumar.gateway.exception.ExpiredTokenException;
 import dev.subrotokumar.gateway.exception.InvalidAuthorizationToken;
 import dev.subrotokumar.gateway.exception.MissingAuthenticationHeader;
 import io.jsonwebtoken.Claims;
@@ -86,9 +85,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                             .build();
 
                     exchange = exchange.mutate().request(request).build();
-                }  catch(ExpiredJwtException e){
-                    throw new ExpiredTokenException(e.getMessage());
-                } catch (MalformedJwtException | UnsupportedJwtException | SignatureException
+                }  catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException
                         | IllegalArgumentException e) {
                     throw new InvalidAuthorizationToken();
                 }

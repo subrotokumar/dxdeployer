@@ -31,7 +31,7 @@ public class EmailServiceImpl implements EmailService {
             String token
     ) {
         try {  
-            token = format("http://localhost:4200/auth?magiclink=%s", token);
+            token = format("http://localhost:4200/magiclink/%s", token);
 
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             final MimeMessageHelper messageHelper = new MimeMessageHelper(

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,6 @@ import dev.subrotokumar.accounts.dto.AuthenticationResponseDto;
 import dev.subrotokumar.accounts.dto.MagicLinkRequestDto;
 import dev.subrotokumar.accounts.dto.RefreshTokenRequestDto;
 import dev.subrotokumar.accounts.dto.RegisterAccountRequestDto;
-import dev.subrotokumar.accounts.dto.VerifyMagiclinkDto;
 import dev.subrotokumar.accounts.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -108,10 +108,10 @@ public class AuthenticationController {
     @PostMapping("/magiclink/verify")
     @ResponseStatus(code = HttpStatus.OK)
     public ResponseEntity<AuthenticationResponseDto> verifyMagicLink(
-            @RequestBody VerifyMagiclinkDto verifyMagiclinkDto,
-            HttpServletResponse response
+        @RequestParam("token") String token,
+        HttpServletResponse response
     ) {
-        return ResponseEntity.ok(authService.verifyMagicLink(verifyMagiclinkDto.magiclink(), response));
+        return ResponseEntity.ok(authService.verifyMagicLink(token, response));
     }
 
 }
