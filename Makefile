@@ -25,7 +25,10 @@ build:
 	@@./services/gateway/./mvnw clean package -f ./services/gateway
 
 up:
-	@docker-compose up
+	@podman-compose up
+
+down:
+	@podman-compose down
 
 run-config: 
 	@cd services/config

@@ -1,7 +1,6 @@
 package dev.subrotokumar.project.service.impl;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -17,6 +16,7 @@ import dev.subrotokumar.project.mapper.ProjectMapper;
 import dev.subrotokumar.project.repository.ProjectRepository;
 import dev.subrotokumar.project.service.ContainerService;
 import dev.subrotokumar.project.service.ProjectService;
+import dev.subrotokumar.slugsmith.SlugSmith;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -53,7 +53,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void createProject(int userId, CreateProjectDto createProjectDto) {
         var project = ProjectMapper.dtoToEntity(createProjectDto);
-        project.setSlug(UUID.nameUUIDFromBytes(project.getGithubUrl().getBytes()).toString()+System.currentTimeMillis());
+        project.setSlug(SlugSmith.generateSlug());
         project.setUserId(userId);
         // boolean status = containerService.startTask(project.getSlug(), project.getGithubUrl());
         // if (status) {
