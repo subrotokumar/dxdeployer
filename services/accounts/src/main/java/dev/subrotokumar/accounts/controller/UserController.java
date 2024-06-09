@@ -42,7 +42,7 @@ public class UserController {
     /**
      * Retrieves user data based on the provided user ID.
      *
-     * @param request request interface to provide request information for HTTP servlets
+     * @param userId header to provide request information about userId
      * @return ResponseEntity containing the user's account data
      */
     @Operation(summary = "Get User Data", description = "Retrieve user data for a given user ID")

@@ -3,6 +3,7 @@ package dev.subrotokumar.notification.entity;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import dev.subrotokumar.notification.kafka.model.LoginMagiclink;
@@ -22,6 +23,7 @@ import lombok.Setter;
 public class Notification {
     @Id
     private String id;
+    @Indexed
     private int userId;
     private NotificationType type;
     private LocalDateTime date;

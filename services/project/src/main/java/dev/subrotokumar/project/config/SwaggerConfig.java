@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.info.License;
                 ),
                 license = @License(
                         name = "Apache 2.0",
-                        url = "http://github.com/subrotokumar/dxd-paas"
+                        url = "http://github.com/subrotokumar/dxdeployer"
                 )
         ),
         externalDocs = @ExternalDocumentation(

@@ -1,14 +1,17 @@
-package dev.subrotokumar.accounts.config;
+package dev.subrotokumar.notification.config;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @OpenAPIDefinition(
 	info = @Info(
-		title = "DxD: Account Microservice REST API Documentation",
+		title = "DxD: Notification Microservice REST API Documentation",
 		version = "v1",
 		contact = @Contact(
 			name = "Subroto Kumar",
@@ -20,18 +23,18 @@ import io.swagger.v3.oas.annotations.info.License;
 		)
 	),
 	externalDocs = @ExternalDocumentation(
-		description = "DxD Notification Microservice REST API Docs",
+		description = "DxD Account Microservice REST API Docs",
 		url = "http://blog.subrotokumar.com"
 	)
 )
-// @SecurityScheme(
-// 	name = "bearerAuth",
-// 	description = "JWT Auth description",
-// 	scheme = "bearer",
-// 	type = SecuritySchemeType.HTTP,
-// 	bearerFormat = "JWT",
-// 	in = SecuritySchemeIn.HEADER
-// )
+@SecurityScheme(
+	name = "bearerAuth",
+	description = "JWT Auth description",
+	scheme = "bearer",
+	type = SecuritySchemeType.HTTP,
+	bearerFormat = "JWT",
+	in = SecuritySchemeIn.HEADER
+)
 public class SwaggerConfig {
     
 }

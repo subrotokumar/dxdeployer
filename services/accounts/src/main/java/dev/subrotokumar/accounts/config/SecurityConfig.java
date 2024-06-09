@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -39,8 +38,16 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers("/api/v1/account/auth/**", "/api/v1/account/info/**", "/api/v1/account/swagger-ui/**",
-                                        "/api/v1/account/v3/api-docs/**", "/api/v1/account/user", "/actuator/**")
+                                .requestMatchers(      
+                                    "/api/v1/account/auth/**", 
+                                    "/api/v1/account/info/**", 
+                                    "/swagger-ui/**",
+                                    "/v3/**",
+                                    "/api/v1/account/swagger-ui/**",
+                                    "/api/v1/account/v3/api-docs/**", 
+                                    "/api/v1/account/user", 
+                                    "/actuator/**"
+                                )
                                 .permitAll()
                                 .anyRequest().authenticated()
                 )

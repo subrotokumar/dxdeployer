@@ -46,6 +46,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         return ((exchange, chain) -> {
             log.info("Path => {}", exchange.getRequest().getPath());
             if (validator.isSecured.test(exchange.getRequest())) {
+                log.info(" => Authentication Filter Activited");
                 MultiValueMap<String, ResponseCookie> cookies = exchange.getResponse().getCookies();
                 ResponseCookie accessTokenCookie = cookies.getFirst("access_token");
                 System.out.println("Cookie "+accessTokenCookie);

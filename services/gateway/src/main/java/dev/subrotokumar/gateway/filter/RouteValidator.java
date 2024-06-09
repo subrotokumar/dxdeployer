@@ -13,10 +13,14 @@ public class RouteValidator {
             "/api/v1/account/info",
             "/api/v1/account/auth",
             "/api/v1/account/api-docs",
-            "/api/v1/account/swagger-ui/index.html",
-            "/v3/api-docs",
-            "/swagger-ui.html",
-            "/v3/api-docs/swagger-config"
+            "/api/v1/account/v3",
+            "/api/v1/project/v3",
+            "/api/v1/notification/v3",
+            "/api/v1/account/swagger-ui",
+            "/api/v1/project/swagger-ui",
+            "/api/v1/notification/swagger-ui",
+            "/v3",
+            "/swagger-ui"
     );
 
     public Predicate<ServerHttpRequest> isSecured
