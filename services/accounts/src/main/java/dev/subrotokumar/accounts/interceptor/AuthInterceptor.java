@@ -5,7 +5,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.google.common.net.HttpHeaders;
 
-import dev.subrotokumar.accounts.config.SecureEndpointConfig;
 import dev.subrotokumar.accounts.constants.Constants;
 import dev.subrotokumar.accounts.exception.UnauthorizedOperationException;
 import dev.subrotokumar.accounts.service.impl.AccessJwtServiceImpl;
@@ -23,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class AuthInterceptor implements HandlerInterceptor {
 
     final private AccessJwtServiceImpl accessJwtService;
-    final private SecureEndpointConfig secureEndpointConfig;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler ) {

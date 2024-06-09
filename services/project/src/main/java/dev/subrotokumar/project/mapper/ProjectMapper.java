@@ -19,7 +19,7 @@ public class ProjectMapper {
             .title(dto.getTitle())
             .description(dto.getDescription())
             .githubUrl(dto.getGithubUrl())
-            .status(ProjectStatus.INACTIVE)
+            .status(ProjectStatus.DEPLOYING)
             .tags(dto.getTags())
             .createdAt(LocalDateTime.now())
             .type(dto.getType())

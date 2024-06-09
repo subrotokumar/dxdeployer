@@ -56,7 +56,7 @@ public class EmailTemplate {
                         padding: 15px 30px;
                         font-size: 18px;
                         color: #ffffff;
-                        background-color: #007bff;
+                        background-color: #000;
                         text-decoration: none;
                         border-radius: 5px;
                         transition: background-color 0.3s;
@@ -99,5 +99,102 @@ public class EmailTemplate {
             """, 
             magiclink
         );
+    }
+
+    public static String createProjectDeployment(String username, String projectName, String dashboardLink){
+        return format("""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Project Deployment Notification</title>
+            <style>
+                body {
+                    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                    background-color: #f9f9f9;
+                    margin: 0;
+                    padding: 0;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 20px auto;
+                    background-color: #ffffff;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                    border: 1px solid #ddd;
+                }
+                .header {
+                    background-color: #000000;
+                    color: #ffffff;
+                    padding: 20px;
+                    text-align: center;
+                }
+                .header h1 {
+                    margin: 0;
+                    font-size: 24px;
+                }
+                .content {
+                    padding: 30px 20px;
+                    line-height: 1.6;
+                    color: #333333;
+                }
+                .content h2 {
+                    color: #000000;
+                    font-size: 20px;
+                    margin-top: 0;
+                }
+                .content p {
+                    margin: 10px 0;
+                }
+                .button {
+                    display: inline-block;
+                    background-color: #000000;
+                    color: #ffffff;
+                    padding: 12px 20px;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    margin-top: 20px;
+                    transition: background-color 0.3s;
+                }
+                .button:hover {
+                    background-color: #333333;
+                }
+                .footer {
+                    background-color: #000000;
+                    color: #ffffff;
+                    padding: 15px;
+                    text-align: center;
+                }
+                .footer p {
+                    margin: 0;
+                    font-size: 14px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>DxDeployer</h1>
+                </div>
+                <div class="content">
+                    <h2>Project Deployment Notification</h2>
+                    <p>Dear %s,</p>
+                    <p>We are excited to inform you that your project "<strong>%s</strong>" has started deploying on the DxDeployer platform.</p>
+                    <p>Please monitor the deployment process through your dashboard. If you encounter any issues or need further assistance, feel free to contact our support team.</p>
+                    <p>Thank you for using DxDeployer!</p>
+                    <br>
+                    <p>Best regards,</p>
+                    <p>The DxDeployer Team</p>
+                    <a href="%s" class="button">Go to Dashboard</a>
+                </div>
+                <div class="footer">
+                    <p>&copy; 2024 DXDeployer. All rights reserved.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """, username, projectName, dashboardLink);
     }
 }

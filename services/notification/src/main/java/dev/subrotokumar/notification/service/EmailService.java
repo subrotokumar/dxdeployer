@@ -6,4 +6,10 @@ public interface EmailService {
         String name,
         String token
     );
+
+    public void sendProjectDeploymentStartMail(
+            String username,
+            String email,
+            String projectName
+    );
 }

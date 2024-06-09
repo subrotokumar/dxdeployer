@@ -5,7 +5,8 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import dev.subrotokumar.notification.kafka.LoginMagiclink;
+import dev.subrotokumar.notification.kafka.model.LoginMagiclink;
+import dev.subrotokumar.notification.kafka.model.ProjectDeployment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,4 +26,5 @@ public class Notification {
     private NotificationType type;
     private LocalDateTime date;
     private LoginMagiclink loginMagiclink;
+    private ProjectDeployment projectDeployment;
 }

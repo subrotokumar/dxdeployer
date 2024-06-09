@@ -12,6 +12,7 @@ import dev.subrotokumar.project.entity.Project;
 import dev.subrotokumar.project.entity.ProjectStatus;
 import dev.subrotokumar.project.excaption.ProjectNotFoundException;
 import dev.subrotokumar.project.excaption.UnauthorizedException;
+import dev.subrotokumar.project.kafka.ProjectDeploymentProducer;
 import dev.subrotokumar.project.mapper.ProjectMapper;
 import dev.subrotokumar.project.repository.ProjectRepository;
 import dev.subrotokumar.project.service.ContainerService;
@@ -26,6 +27,7 @@ public class ProjectServiceImpl implements ProjectService {
     final private ProjectRepository projectRepository;
     final private ContainerService containerService;
     final private AccountClient accountClient;
+    final private ProjectDeploymentProducer projectDeploymentProducer;
 
     @Override
     public List<Project> findAllMyProject(int userId) {
@@ -59,6 +61,7 @@ public class ProjectServiceImpl implements ProjectService {
         // if (status) {
         //     project.setStatus(ProjectStatus.INACTIVE);
             projectRepository.save(project);
+            projectDeploymentProducer.sendStatus(project);
         // }
     }
 

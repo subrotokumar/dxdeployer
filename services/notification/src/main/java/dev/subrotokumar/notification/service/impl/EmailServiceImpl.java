@@ -52,4 +52,32 @@ public class EmailServiceImpl implements EmailService {
             log.warn("WARNING - Cannot send email to {} due to {}", destinationEmail, e.getMessage());
         }
     }
+
+    @Async
+    @Override
+    public void sendProjectDeploymentStartMail(
+            String username,
+            String destinationEmail,
+            String projectName
+    ) {
+        try {  
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            final MimeMessageHelper messageHelper = new MimeMessageHelper(
+                    mimeMessage,
+                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    UTF_8.name()
+            );
+
+            messageHelper.setFrom("info@dxdeployer.dev");
+            messageHelper.setSubject("Login to DxDeployer");
+
+            messageHelper.setText(EmailTemplate.createProjectDeployment(username, projectName, "http://localhost:4200/dashboard"), true);
+
+            messageHelper.setTo(destinationEmail);
+            mailSender.send(mimeMessage);
+            log.info(format("INFO - Project Deployment Mail successfully send to %s", destinationEmail));
+        } catch (MessagingException | MailException e) {
+            log.warn("WARNING - Cannot send email to {} due to {}", destinationEmail, e.getMessage());
+        }
+    }
 }
