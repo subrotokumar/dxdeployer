@@ -1,0 +1,29 @@
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+  
+  - job_name: 'Accounts Service'
+    metrics_path: /actuator/prometheus
+    scrape_interval: 4s
+    static_configs:
+      - targets: ['localhost:1111']
+        labels:
+          application: 'Accounts Service'
+
+  - job_name: 'Project Service'
+    metrics_path: /actuator/prometheus
+    scrape_interval: 4s
+    static_configs:
+      - targets: ['localhost:2222']
+        labels:
+          application: 'Project Service'
+
+  - job_name: 'Notification Service'
+    metrics_path: /actuator/prometheus
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:5555']
+        labels:
+          application: 'Notification Service'

@@ -66,4 +66,6 @@ public interface JwtService {
     boolean isTokenValid(String token, UserDetails userDetails);
 
     public Claims extractAllClaims(String token);
+
+    public long getExpiryDuration();
 }

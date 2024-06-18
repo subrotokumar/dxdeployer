@@ -66,7 +66,7 @@ public class RefreshJwtServiceImpl implements JwtService {
             long expiration, int userId) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("role", role.name());
-        extraClaims.put("type", "ACCESS_TOKEN");
+        extraClaims.put("type", "REFRESH_TOKEN");
         extraClaims.put("iss", "subrotokumar.dev");
         if (userId != 0) {
             extraClaims.put("userId", userId);
@@ -100,5 +100,10 @@ public class RefreshJwtServiceImpl implements JwtService {
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    @Override
+    public long getExpiryDuration() {
+        return jwtExpiration;
     }
 }

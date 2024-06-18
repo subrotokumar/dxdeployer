@@ -93,7 +93,39 @@ services:
       LABEL_con2: MongoDB
       URL_con2: mongodb://admin:password@mongo:27000
       ENGINE_con2: mongo@dbgate-plugin-mongo
+  
+  prometheus:
+    container_name: dxd_prometheus
+    image: docker.io/prom/prometheus
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - ./conf/prometheus.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    networks:
+      - microservices-net
 
+  grafana:
+    container_name: dxd_grafana
+    image: docker.io/grafana/grafana-oss
+    network_mode: "host"
+    user: root
+    ports:
+      - 3000:3000
+    links:
+      - prometheus:prometheus
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_DOMAIN=localhost
+      - GF_LOG_MODE=console file
+      - GF_LOG_FILTERS=alerting.notifier.slack:debug alertmanager:debug ngalert:debug
+    networks:
+      - microservices-net
+  
   # nginx:
   #   image: docker.io/nginx:alpine
   #   ports:

@@ -119,13 +119,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var accessToken = accessJwtService.generateToken(account, account.getId());
         var refreshToken = refreshJwtService.generateToken(account, account.getId());
 
+        Date accessTokenExpiry = accessJwtService.extractExpiration(accessToken);
+        Date refreshTokenExpiry = refreshJwtService.extractExpiration(refreshToken);
+
         refreshTokenRepository.save(
                 RefreshToken
                         .builder()
                         .token(refreshToken)
                         .type(TokenType.REFRESH_TOKEN)
                         .tokenId(UUID.nameUUIDFromBytes(refreshToken.getBytes()))
-                        .expiry(refreshJwtService.extractExpiration(refreshToken))
+                        .expiry(refreshTokenExpiry)
                         .build());
 
         var authResponse = AuthenticationResponseDto
@@ -134,14 +137,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         TokenDto
                                 .builder()
                                 .token(accessToken)
-                                .expiry(accessJwtService.extractExpiration(accessToken))
+                                .expiry(accessTokenExpiry)
                                 .build())
                 .refreshToken(
                         TokenDto
                                 .builder()
                                 .token(refreshToken)
-                                .expiry(refreshJwtService
-                                        .extractExpiration(refreshToken))
+                                .expiry(refreshTokenExpiry)
                                 .build())
                 .build();
 
@@ -151,17 +153,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         ResponseCookie cookie1 = ResponseCookie
                 .from("access_token", encodedAccessToken)
                 .httpOnly(true)
-                .secure(true)
+                // .secure(true)
                 .path("/")
-                .maxAge(7 * 24 * 60 * 60)
+                .maxAge(accessJwtService.getExpiryDuration()/1000)
                 .build();
 
         ResponseCookie cookie2 = ResponseCookie
                 .from("refresh_token", encodedRefreshToken)
                 .httpOnly(true)
-                .secure(true)
+                // .secure(true)
                 .path("/")
-                .maxAge(7 * 24 * 60 * 60)
+                .maxAge(refreshJwtService.getExpiryDuration()/1000)
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie1.toString());
@@ -173,10 +175,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void magiclink(MagicLinkRequestDto magiclinkRequest) {
         var user = magiclinkRequest.getUsername();
-        System.out.println("user "+user);
+        System.out.println("user " + user);
         Account account = accountRepository
-                        .findByUsernameOrEmail(user, user)
-                        .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+                .findByUsernameOrEmail(user, user)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
         if (!account.isEmailVerified()) {
             // return;
         }
@@ -202,14 +204,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .magiclink(Base64.getEncoder().encodeToString(magiclink.getBytes()))
                         .username(account.getUsername())
                         .callbackUrl(null)
-                        .build()
-        );
+                        .build());
     }
 
     @Override
     public AuthenticationResponseDto verifyMagicLink(String magicLink, HttpServletResponse response) {
         magicLink = new String(Base64.getDecoder().decode(magicLink));
-        System.out.println("Magiclink "+magicLink);
+        System.out.println("Magiclink " + magicLink);
         Claims claim = Jwts
                 .parserBuilder()
                 .setSigningKey(getMagiclinkSecretKey())
@@ -217,7 +218,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .parseClaimsJws(magicLink)
                 .getBody();
         String id = claim.get("userId").toString();
-        System.out.println("Magiclink "+magicLink);
+        System.out.println("Magiclink " + magicLink);
         Account account = accountRepository
                 .findById(Integer.valueOf(id))
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
@@ -225,19 +226,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var accessToken = accessJwtService.generateToken(account, account.getId());
         var refreshToken = refreshJwtService.generateToken(account, account.getId());
 
-        System.out.println("access token "+accessToken);
-        System.out.println("refresh token "+refreshToken);
-
+        System.out.println("access token " + accessToken);
+        System.out.println("refresh token " + refreshToken);
 
         // refreshTokenRepository.save(
-        //         RefreshToken
-        //                 .builder()
-        //                 .token(refreshToken)
-        //                 .type(TokenType.REFRESH_TOKEN)
-        //                 .tokenId(UUID.nameUUIDFromBytes(refreshToken.getBytes()))
-        //                 .expiry(refreshJwtService.extractExpiration(refreshToken))
-        //                 .build());
-
+        // RefreshToken
+        // .builder()
+        // .token(refreshToken)
+        // .type(TokenType.REFRESH_TOKEN)
+        // .tokenId(UUID.nameUUIDFromBytes(refreshToken.getBytes()))
+        // .expiry(refreshJwtService.extractExpiration(refreshToken))
+        // .build());
         var authResponse = AuthenticationResponseDto
                 .builder()
                 .accessToken(
@@ -260,8 +259,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         ResponseCookie cookie1 = ResponseCookie
                 .from("access_token", encodedAccessToken)
-                .httpOnly(true)
-                .secure(true)
+                .httpOnly(false)
+                .secure(false)
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
@@ -269,7 +268,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         ResponseCookie cookie2 = ResponseCookie
                 .from("refresh_token", encodedRefreshToken)
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
@@ -281,7 +280,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private Key getMagiclinkSecretKey() {
-        byte[] keyBytes = Decoders.BASE64.decode("magiclinkshajvdcjqw2eyuqy82dgiqgwayvxy8b29exyben98273e3gen3zyugny87e3");
+        byte[] keyBytes = Decoders.BASE64
+                .decode("magiclinkshajvdcjqw2eyuqy82dgiqgwayvxy8b29exyben98273e3gen3zyugny87e3");
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
